@@ -45,4 +45,43 @@ public interface CalcAverages {
 		}
 		return average / (double) (alp.size());
 	}
+
+	/**
+	 * Calculation with little's formula
+	 * 
+	 * @param w
+	 *            Average wait time in queue
+	 * @param lambda
+	 *            Average arrival rate into queue
+	 * @return Average queue length
+	 */
+	public default double littleAverageQueueLength(double w, double lambda) {
+		return w * lambda;
+	}
+
+	/**
+	 * Calculation with little's formula
+	 * 
+	 * @param n
+	 *            Average queue length
+	 * @param lambda
+	 *            Average arrival rate into queue
+	 * @return Average wait time in queue
+	 */
+	public default double littleAverageWaitTime(double n, double lambda) {
+		return n / lambda;
+	}
+
+	/**
+	 * Calculation with little's formula
+	 * 
+	 * @param n
+	 *            Average queue length
+	 * @param w
+	 *            Average wait time in queue
+	 * @return Average arrival rate into queue
+	 */
+	public default double littleAverageArrivalRate(double n, double w) {
+		return n / w;
+	}
 }

@@ -10,7 +10,7 @@ import java.util.Random;
  * 
  * @author Peter Vukas
  */
-public class Process implements Comparable<Process> {
+public abstract class Process {
 	private double burstTime;
 	private String name;
 	private double waitTime;
@@ -21,7 +21,7 @@ public class Process implements Comparable<Process> {
 	private static int processNameGen = 0;
 	private boolean waitTimeAssigned;
 	private boolean turnAroundTimeAssigned;
-	private short priority;
+	private boolean isFinished;
 
 	/**
 	 * @param burstTime
@@ -34,7 +34,7 @@ public class Process implements Comparable<Process> {
 		this.name = name;
 		waitTimeAssigned = false;
 		turnAroundTimeAssigned = false;
-		priority = 0;
+		isFinished = false;
 	}
 
 	/**
@@ -48,7 +48,7 @@ public class Process implements Comparable<Process> {
 		name = String.format("P%d", processNameGen++);
 		waitTimeAssigned = false;
 		turnAroundTimeAssigned = false;
-		priority = 0;
+		isFinished = false;
 	}
 
 	/**
@@ -62,7 +62,7 @@ public class Process implements Comparable<Process> {
 		name = n;
 		waitTimeAssigned = false;
 		turnAroundTimeAssigned = false;
-		priority = 0;
+		isFinished = false;
 	}
 
 	/**
@@ -73,7 +73,7 @@ public class Process implements Comparable<Process> {
 		name = String.format("P%d", processNameGen++);
 		waitTimeAssigned = false;
 		turnAroundTimeAssigned = false;
-		priority = 0;
+		isFinished = false;
 	}
 
 	/**
@@ -88,6 +88,20 @@ public class Process implements Comparable<Process> {
 	 */
 	public boolean isTurnAroundTimeAssigned() {
 		return turnAroundTimeAssigned;
+	}
+
+	/**
+	 * @return Boolean. If true, the process has been flagged as finished.
+	 */
+	public boolean isFinished() {
+		return isFinished;
+	}
+
+	/**
+	 * Inverts the status of finished. The default state on instantiation is false.
+	 */
+	public void toggleFinished() {
+		isFinished = !isFinished;
 	}
 
 	/**
@@ -170,40 +184,6 @@ public class Process implements Comparable<Process> {
 		} else {
 			turnAroundTime = tAroundTime;
 			turnAroundTimeAssigned = true;
-		}
-	}
-
-	/**
-	 * @return Priority level which has been assigned via setPriority(). If no value
-	 *         was assigned, the value will be 0 by default.
-	 */
-	public short getPriority() {
-		return priority;
-	}
-
-	/**
-	 * Used to assign the priority level of this process. Preassigned value is 0.
-	 * 
-	 * @param priority
-	 *            Priority level of this process.
-	 */
-	public void setPriority(short priority) {
-		this.priority = priority;
-	}
-
-	/**
-	 * @param p
-	 *            The process to be compared by burst time
-	 * @return 0 if both bursts are equal, -1 if this < p, 1 if this > p
-	 */
-	@Override
-	public int compareTo(Process p) {
-		if (burstTime == p.getBurstTime()) {
-			return 0;
-		} else if (burstTime < p.getBurstTime() ) {
-			return -1;
-		} else {
-			return 1;
 		}
 	}
 

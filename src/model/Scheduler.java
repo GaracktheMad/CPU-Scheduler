@@ -29,14 +29,7 @@ public abstract class Scheduler implements CalcAverages {
 	 *            An integer > 0 representing the amount of generated processes
 	 *            desired. If this value is <= 0, it will be replaced with 10.
 	 */
-	public void populateProcessList(int size) {
-		if (size < 1) {
-			size = 10;
-		}
-		for (int i = 0; i < size; i++) {
-			processes.add(new Process());
-		}
-	}
+	public abstract void populateProcessList(int size);
 
 	/**
 	 * Should be filled with the logic to determine process wait/turn around times

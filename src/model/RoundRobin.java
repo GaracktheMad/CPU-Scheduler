@@ -1,6 +1,6 @@
 package model;
 
-public class RoundRobin extends Scheduler{
+public class RoundRobin extends Scheduler implements UsesArrivalProcesses{
 	private double timeQuantum;
 
 	public RoundRobin(double timeQuantum) {super();
@@ -20,5 +20,16 @@ public class RoundRobin extends Scheduler{
 	public void run() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void populateProcessList(int size) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addProcess(ArrivalProcess ap) {
+		processes.add(ap);
 	}
 }
