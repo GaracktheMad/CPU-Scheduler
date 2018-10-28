@@ -1,8 +1,9 @@
 package model;
 
+import java.util.Comparator;
 import java.util.Random;
 
-public class PrioritizedProcess extends Process implements Comparable<PrioritizedProcess> {
+public class PrioritizedProcess extends Process implements Comparable<PrioritizedProcess>, Comparator<PrioritizedProcess> {
 	private short priority;
 
 	/**
@@ -11,6 +12,15 @@ public class PrioritizedProcess extends Process implements Comparable<Prioritize
 	public PrioritizedProcess() {
 		super();
 		randomPriority();
+	}
+	
+	/**
+	 * Copy constructor
+	 * @param p The process to deep copy
+	 */
+	public PrioritizedProcess(PrioritizedProcess pp) {
+		super(pp);
+		priority = pp.getPriority();
 	}
 
 	/**
@@ -100,6 +110,21 @@ public class PrioritizedProcess extends Process implements Comparable<Prioritize
 		if (priority == p.getPriority()) {
 			return 0;
 		} else if (priority < p.getPriority()) {
+			return -1;
+
+		} else {
+			return 1;
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+	 */
+	@Override
+	public int compare(PrioritizedProcess p1, PrioritizedProcess p2) {
+		if (p1.getPriority() == p2.getPriority()) {
+			return 0;
+		} else if (p1.getPriority() < p2.getPriority()) {
 			return -1;
 
 		} else {

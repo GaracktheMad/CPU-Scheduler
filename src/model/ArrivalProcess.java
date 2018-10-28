@@ -1,8 +1,9 @@
 package model;
 
+import java.util.Comparator;
 import java.util.Random;
 
-public class ArrivalProcess extends Process implements Comparable<ArrivalProcess> {
+public class ArrivalProcess extends Process implements Comparable<ArrivalProcess>, Comparator<ArrivalProcess> {
 	private double arrivalTime;
 
 	/**
@@ -25,6 +26,15 @@ public class ArrivalProcess extends Process implements Comparable<ArrivalProcess
 		arrivalTime = arrivalT;
 	}
 
+	/**
+	 * Copy constructor
+	 * @param p The process to deep copy
+	 */
+	public ArrivalProcess(ArrivalProcess ap) {
+		super(ap);
+		arrivalTime = ap.getArrivalTime();
+	}
+	
 	/**
 	 * @param arrivalT
 	 *            Double value of the time the process arrived in the cpu
@@ -96,5 +106,20 @@ public class ArrivalProcess extends Process implements Comparable<ArrivalProcess
 			return 1;
 		}
 	}
+
+	/* (non-Javadoc)
+	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+	 */
+	@Override
+	public int compare(ArrivalProcess p1, ArrivalProcess p2) {
+		if (p1.getArrivalTime() == p2.getArrivalTime()) {
+			return 0;
+		} else if (p1.getArrivalTime() < p2.getArrivalTime()) {
+			return -1;
+		} else {
+			return 1;
+		}
+	}
+
 
 }

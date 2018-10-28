@@ -75,6 +75,20 @@ public abstract class Process {
 		turnAroundTimeAssigned = false;
 		isFinished = false;
 	}
+	
+	/**
+	 * Copy constructor
+	 * @param p The process to deep copy
+	 */
+	protected Process(Process p) {
+		name = p.getName();
+		burstTime = p.getBurstTime();
+		waitTimeAssigned = p.isWaitTimeAssigned();
+		turnAroundTimeAssigned = p.isTurnAroundTimeAssigned();
+		isFinished = p.isFinished();
+		waitTime = p.getWaitTime();
+		turnAroundTime = p.getTurnAroundTime();
+	}
 
 	/**
 	 * @return Checks if there is an assigned wait time

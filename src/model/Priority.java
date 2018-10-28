@@ -1,11 +1,8 @@
 package model;
 
-public class Priority extends Scheduler implements UsesPrioritizedProcesses {
+import java.util.ArrayList;
 
-	@Override
-	public void run() {
-		//TODO
-	}
+public class Priority extends Scheduler<PrioritizedProcess> implements UsesPrioritizedProcesses {
 	
 	@Override
 	public void populateProcessList(int size) {
@@ -21,6 +18,21 @@ public class Priority extends Scheduler implements UsesPrioritizedProcesses {
 	@Override
 	public void addProcess(PrioritizedProcess pp) {
 		processes.add(pp);
+	}
+
+	@Override
+	public ArrayList<PrioritizedProcess> getProcesses() {
+		ArrayList<PrioritizedProcess> returnable = new ArrayList<>();
+		for(PrioritizedProcess pp: processes) {
+			returnable.add(new PrioritizedProcess(pp));
+		}
+		return returnable;
+	}
+
+	@Override
+	public ArrayList<PrioritizedProcess> run() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

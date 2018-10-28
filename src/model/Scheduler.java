@@ -8,8 +8,8 @@ import java.util.ArrayList;
  * 
  * @author Peter Vukas
  */
-public abstract class Scheduler implements CalcAverages {
-	protected ArrayList<Process> processes;
+public abstract class Scheduler<N extends Process> implements CalcAverages<N> {
+	protected ArrayList<N> processes;
 	protected double averageWaitTime;
 	protected double averageTurnAroundTime;
 
@@ -17,7 +17,6 @@ public abstract class Scheduler implements CalcAverages {
 	 * Initializes the process list
 	 */
 	Scheduler() {
-		processes = new ArrayList<Process>();
 		averageWaitTime = -1;
 		averageTurnAroundTime = -1;
 	}
@@ -32,9 +31,10 @@ public abstract class Scheduler implements CalcAverages {
 	public abstract void populateProcessList(int size);
 
 	/**
-	 * Should be filled with the logic to determine process wait/turn around times
+	 * The algorithm which determines the order in which processes are run
+	 * @return An array list with the order of processes running
 	 */
-	public abstract void run();
+	public abstract ArrayList<N> run();
 
 	/**
 	 * @return Average wait time if it's been calculated. Otherwise, it will return
@@ -69,4 +69,9 @@ public abstract class Scheduler implements CalcAverages {
 		}
 		return true;
 	}
+	
+	/**
+	 * @return A deep copied list of all processes
+	 */
+	public abstract ArrayList<N> getProcesses();
 }

@@ -1,12 +1,8 @@
 package model;
 
-public class SRT extends Scheduler implements UsesArrivalProcesses {
+import java.util.ArrayList;
 
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		
-	}
+public class SRT extends Scheduler<ArrivalProcess> implements UsesArrivalProcesses {
 
 	@Override
 	public void populateProcessList(int size) {
@@ -17,6 +13,21 @@ public class SRT extends Scheduler implements UsesArrivalProcesses {
 	@Override
 	public void addProcess(ArrivalProcess ap) {
 		processes.add(ap);
+	}
+
+	@Override
+	public ArrayList<ArrivalProcess> getProcesses() {
+		ArrayList<ArrivalProcess> returnable = new ArrayList<>();
+		for(ArrivalProcess ap: processes) {
+			returnable.add(new ArrivalProcess(ap));
+		}
+		return returnable;
+	}
+
+	@Override
+	public ArrayList<ArrivalProcess> run() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

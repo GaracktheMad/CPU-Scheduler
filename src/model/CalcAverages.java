@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * 
  * @author Peter Vukas
  */
-public interface CalcAverages {
+public interface CalcAverages <N extends Process> {
 
 	/**
 	 * @param alp
@@ -17,7 +17,7 @@ public interface CalcAverages {
 	 * @throws InvalidTimeException
 	 *             Thrown when a process is found without a wait time
 	 */
-	public default double averageWait(ArrayList<Process> alp) throws InvalidTimeException {
+	public default double averageWait(ArrayList<N> alp) throws InvalidTimeException {
 		double average = 0;
 		for (Process p : alp) {
 			if (p.isWaitTimeAssigned() == false) {
@@ -35,7 +35,7 @@ public interface CalcAverages {
 	 * @throws InvalidTimeException
 	 *             Thrown when a process is found without a turn around time
 	 */
-	public default double averageTurnAround(ArrayList<Process> alp) throws InvalidTimeException {
+	public default double averageTurnAround(ArrayList<N> alp) throws InvalidTimeException {
 		double average = 0;
 		for (Process p : alp) {
 			if (p.isTurnAroundTimeAssigned() == false) {
