@@ -2,7 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
-public class Priority extends Scheduler<PrioritizedProcess> implements UsesPrioritizedProcesses {
+public class Priority extends Scheduler<PrioritizedProcess>  {
 	
 	@Override
 	public void populateProcessList(int size) {
@@ -33,6 +33,12 @@ public class Priority extends Scheduler<PrioritizedProcess> implements UsesPrior
 	public ArrayList<PrioritizedProcess> run() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public boolean removeProcess(PrioritizedProcess p) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

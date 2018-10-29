@@ -72,4 +72,5 @@ public class BurstProcess extends Process implements Comparable<BurstProcess>,Co
 			return 1;
 		}
 	}
+
 }

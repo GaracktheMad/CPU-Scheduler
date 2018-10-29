@@ -5,6 +5,8 @@ import java.util.Random;
 
 public class ArrivalProcess extends Process implements Comparable<ArrivalProcess>, Comparator<ArrivalProcess> {
 	private double arrivalTime;
+	public ArrivalProcess next;//Included for better compatibility with Brandon's Algorithm
+
 
 	/**
 	 * Assigns a random burst time, arrival time and an auto-generated name

@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * @author Peter Vukas
  *
  */
-public class FIFO extends Scheduler<ArrivalProcess> implements UsesArrivalProcesses {
+public class FIFO extends Scheduler<ArrivalProcess>  {
 
 	/**
 	 * Initializes the list of processes

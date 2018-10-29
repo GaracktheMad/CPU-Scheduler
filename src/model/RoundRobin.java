@@ -2,7 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
-public class RoundRobin extends Scheduler<ArrivalProcess> implements UsesArrivalProcesses{
+public class RoundRobin extends Scheduler<ArrivalProcess> {
 	private double timeQuantum;
 
 	public RoundRobin(double timeQuantum) {super();
@@ -42,5 +42,11 @@ public class RoundRobin extends Scheduler<ArrivalProcess> implements UsesArrival
 	public ArrayList<ArrivalProcess> run() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public boolean removeProcess(ArrivalProcess p) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

@@ -2,7 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
-public class SRT extends Scheduler<ArrivalProcess> implements UsesArrivalProcesses {
+public class SRT extends Scheduler<ArrivalProcess>  {
 
 	@Override
 	public void populateProcessList(int size) {
@@ -28,6 +28,12 @@ public class SRT extends Scheduler<ArrivalProcess> implements UsesArrivalProcess
 	public ArrayList<ArrivalProcess> run() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public boolean removeProcess(ArrivalProcess p) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

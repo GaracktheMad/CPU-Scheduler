@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * @author 
  *
  */
-public class SJF extends Scheduler<BurstProcess> implements UsesBurstProcesses  {
+public class SJF extends Scheduler<BurstProcess>   {
 	
 	public void addProcess(BurstProcess bp) {
 		processes.add(bp);
@@ -31,6 +31,12 @@ public class SJF extends Scheduler<BurstProcess> implements UsesBurstProcesses  
 	public ArrayList<BurstProcess> run() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public boolean removeProcess(BurstProcess p) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

@@ -74,4 +74,13 @@ public abstract class Scheduler<N extends Process> implements CalcAverages<N> {
 	 * @return A deep copied list of all processes
 	 */
 	public abstract ArrayList<N> getProcesses();
+	/**
+	 * @param ap A Process to be added to the list of processes to run
+	 */
+	public abstract void addProcess(N p);
+	/**
+	 * @param ap The process to be removed from the list of processes to run
+	 * @return True if the process was found and removed.
+	 */
+	public abstract boolean removeProcess(N p);
 }
