@@ -141,7 +141,7 @@ public abstract class Process {
 	 *             Thrown if the bTime is <= 0
 	 */
 	public void setBurstTime(double bTime) throws InvalidTimeException {
-		if (bTime <= 0) {
+		if (bTime < 0) {
 			throw new InvalidTimeException();
 		} else {
 			burstTime = bTime;
