@@ -3,25 +3,50 @@ package model;
 import java.util.Comparator;
 import java.util.Random;
 
-public class PrioritizedProcess extends Process implements Comparable<PrioritizedProcess>, Comparator<PrioritizedProcess> {
+/**
+ * Process which has and is sorted by a priority level
+ * 
+ * @author Peter Vukas
+ *
+ */
+public class PrioritizedProcess extends Process
+		implements Comparable<PrioritizedProcess>, Comparator<PrioritizedProcess> {
+	/**
+	 * The priority level of this process instance. 
+	 */
 	private short priority;
 
 	/**
 	 * Assigns a random burst time, priority level and an auto-generated name
+	 * @throws InvalidTimeException An unexpected error occurs in this case, and you should contact the creator of this method asap for fixing
 	 */
-	public PrioritizedProcess() {
+	public PrioritizedProcess() throws InvalidTimeException {
 		super();
 		randomPriority();
 	}
-	
+
 	/**
 	 * Copy constructor
-	 * @param p The process to deep copy
+	 * 
+	 * @param pp
+	 *            The process to deep copy
 	 */
 	public PrioritizedProcess(PrioritizedProcess pp) {
 		super(pp);
 		priority = pp.getPriority();
 	}
+	
+	
+	/**
+	 * Converts the process into a prioritized process
+	 * @param p Process to be converted
+	 * @param prior Priority level of the new converted process
+	 */
+	public PrioritizedProcess(Process p, short prior) {
+		super(p);
+		priority = prior;
+	}
+
 
 	/**
 	 * Assigns a random burst time and an auto-generated name with the specified
@@ -29,48 +54,10 @@ public class PrioritizedProcess extends Process implements Comparable<Prioritize
 	 * 
 	 * @param p
 	 *            Short value of the Priority level
+	 * @throws InvalidTimeException An unexpected error occurs in this case, and you should contact the creator of this method asap for fixing
 	 */
-	public PrioritizedProcess(short p) {
+	public PrioritizedProcess(short p) throws InvalidTimeException {
 		super();
-		priority = p;
-	}
-
-	/**
-	 * @param p
-	 *            Short value of the Priority level
-	 * @param burstTime
-	 *            Double value of the process burst time
-	 * @param name
-	 *            String value of the process name
-	 */
-	public PrioritizedProcess(double burstTime, String name, short p) {
-		super(burstTime, name);
-		priority = p;
-	}
-
-	/**
-	 * Auto-generates a process name.
-	 * 
-	 * @param p
-	 *            Short value of the Priority level
-	 * @param burstTime
-	 *            Double value of the process burst time
-	 */
-	public PrioritizedProcess(double burstTime, short p) {
-		super(burstTime);
-		priority = p;
-	}
-
-	/**
-	 * Assigns a random burst time
-	 * 
-	 * @param p
-	 *            Short value of the Priority level
-	 * @param name
-	 *            String value of the process name
-	 */
-	public PrioritizedProcess(String n, short p) {
-		super(n);
 		priority = p;
 	}
 
@@ -117,7 +104,9 @@ public class PrioritizedProcess extends Process implements Comparable<Prioritize
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 	 */
 	@Override

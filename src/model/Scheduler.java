@@ -3,14 +3,27 @@ package model;
 import java.util.ArrayList;
 
 /**
- * Super class of all CPU Scheduling algorithms with common variables and
+ * * Super class of all CPU Scheduling algorithms with common variables and
  * methods. This is an abstract class and should be used accordingly.
  * 
  * @author Peter Vukas
+ * @param <N>
+ *            A subclass of process which is used by this algorithm
  */
 public abstract class Scheduler<N extends Process> implements CalcAverages<N> {
+	/**
+	 * An array list of all processes to be considered by this algorithm
+	 */
 	protected ArrayList<N> processes;
+	/**
+	 * The sum of wait times for all processes in the array list / the length of the
+	 * array list
+	 */
 	protected double averageWaitTime;
+	/**
+	 * The sum of turn around times for all processes in the array list / the length
+	 * of the array list
+	 */
 	protected double averageTurnAroundTime;
 
 	/**
@@ -32,6 +45,7 @@ public abstract class Scheduler<N extends Process> implements CalcAverages<N> {
 
 	/**
 	 * The algorithm which determines the order in which processes are run
+	 * 
 	 * @return An array list with the order of processes running
 	 */
 	public abstract ArrayList<N> run();
@@ -69,17 +83,22 @@ public abstract class Scheduler<N extends Process> implements CalcAverages<N> {
 		}
 		return true;
 	}
-	
+
 	/**
-	 * @return A deep copied list of all processes
+	 * @return A deep copied list of all processes which can be changed without
+	 *         issue to this scheduler algorithm
 	 */
 	public abstract ArrayList<N> getProcesses();
+
 	/**
-	 * @param ap A Process to be added to the list of processes to run
+	 * @param p
+	 *            A Process to be added to the list of processes to run
 	 */
 	public abstract void addProcess(N p);
+
 	/**
-	 * @param ap The process to be removed from the list of processes to run
+	 * @param p
+	 *            The process to be removed from the list of processes to run
 	 * @return True if the process was found and removed.
 	 */
 	public abstract boolean removeProcess(N p);

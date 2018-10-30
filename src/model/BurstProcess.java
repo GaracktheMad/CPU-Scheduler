@@ -2,45 +2,30 @@ package model;
 
 import java.util.Comparator;
 
-public class BurstProcess extends Process implements Comparable<BurstProcess>,Comparator<BurstProcess>  {
-	
+/**
+ * A process whose comparator and comparable interfaces are implemented based on
+ * the burst time of the processes
+ * 
+ * @author Peter Vukas
+ */
+public class BurstProcess extends Process implements Comparable<BurstProcess>, Comparator<BurstProcess> {
+
 	/**
-	 * Copy constructor
-	 * @param p The process to deep copy
+	 * Copy constructor/Conversion Constructor
+	 * 
+	 * @param p
+	 *            The process to deep copy
 	 */
-	public BurstProcess(BurstProcess bp) {
-		super(bp);
-	}
-	
-	/**
-	 * Assigns a random burst time and an auto-generated name
-	 */
-	public BurstProcess() {
-		super();
+	public BurstProcess(Process p) {
+		super(p);
 	}
 
 	/**
-	 * @param burstTime Double value of the process burst time
-	 * @param name String value of the process name
+	 * Creates a new Burst Process with all fields of a process randomized
+	 * @throws InvalidTimeException An unexpected error occurs in this case, and you should contact the creator of this method asap for fixing
 	 */
-	public BurstProcess(double burstTime, String name) {
-		super(burstTime, name);
-	}
-
-	/**
-	 * Double value of the process burst time
-	 * @param burstTime Double value of the process burst time
-	 */
-	public BurstProcess(double burstTime) {
-		super(burstTime);
-	}
-
-	/**
-	 * Assigns the process a random burst time.
-	 * @param n String value of the process's name
-	 */
-	public BurstProcess(String n) {
-		super(n);
+	public BurstProcess() throws InvalidTimeException {
+		super(); 
 	}
 
 	/**
@@ -52,21 +37,23 @@ public class BurstProcess extends Process implements Comparable<BurstProcess>,Co
 	public int compareTo(BurstProcess p) {
 		if (getBurstTime() == p.getBurstTime()) {
 			return 0;
-		} else if (getBurstTime() < p.getBurstTime() ) {
+		} else if (getBurstTime() < p.getBurstTime()) {
 			return -1;
 		} else {
 			return 1;
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 	 */
 	@Override
 	public int compare(BurstProcess p1, BurstProcess p2) {
 		if (p1.getBurstTime() == p2.getBurstTime()) {
 			return 0;
-		} else if (p1.getBurstTime() < p2.getBurstTime() ) {
+		} else if (p1.getBurstTime() < p2.getBurstTime()) {
 			return -1;
 		} else {
 			return 1;

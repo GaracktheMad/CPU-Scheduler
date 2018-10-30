@@ -10,17 +10,42 @@ import java.util.Random;
  * 
  * @author Peter Vukas
  */
-public abstract class Process {
+public class Process {
+	/**
+	 * The time at which the process arrived into the CPU. Must be >= 0
+	 */
+	private double arrivalTime;
+	/**
+	 * The time it takes for this process to complete. Must be >= 0
+	 */
 	private double burstTime;
+	/**
+	 * Name of this process. Default format is P#
+	 */
 	private String name;
+	/**
+	 * Time of Execution - Arrival Time Must be >= 0
+	 */
 	private double waitTime;
+	/**
+	 * Time of completion. Must be >= 0
+	 */
 	private double turnAroundTime;
 	/**
 	 * Used for auto name generation for default constructor
 	 */
 	private static int processNameGen = 0;
+	/**
+	 * When true, indicates a wait time has been added to this process
+	 */
 	private boolean waitTimeAssigned;
+	/**
+	 * When true, indicates a turn around time has been added to this process
+	 */
 	private boolean turnAroundTimeAssigned;
+	/**
+	 * Indicates this process has already run and is no longer needed
+	 */
 	private boolean isFinished;
 
 	/**
@@ -28,13 +53,18 @@ public abstract class Process {
 	 *            Double value of the process burst time
 	 * @param name
 	 *            String value of the process name
+	 * @param arrivalT
+	 *            Double value of the time the process arrived in the cpu
+	 * @throws InvalidTimeException
+	 *             Thrown when the burst time or arrival time is invalid
 	 */
-	public Process(double burstTime, String name) {
-		this.burstTime = burstTime;
+	public Process(double burstTime, String name, double arrivalT) throws InvalidTimeException {
+		setBurstTime(burstTime);
 		this.name = name;
 		waitTimeAssigned = false;
 		turnAroundTimeAssigned = false;
 		isFinished = false;
+		setArrivalTime(arrivalT);
 	}
 
 	/**
@@ -42,13 +72,18 @@ public abstract class Process {
 	 * 
 	 * @param burstTime
 	 *            Double value of the process burst time
+	 * @param arrivalT
+	 *            Double value of the process arrival time into the CPU
+	 * @throws InvalidTimeException
+	 *             Thrown when the burst time or arrival time is invalid
 	 */
-	public Process(double burstTime) {
-		this.burstTime = burstTime;
-		name = String.format("P%d", processNameGen++);
+	public Process(double burstTime, double arrivalT) throws InvalidTimeException {
+		setBurstTime(burstTime);
+		generateName();
 		waitTimeAssigned = false;
 		turnAroundTimeAssigned = false;
 		isFinished = false;
+		setArrivalTime(arrivalT);
 	}
 
 	/**
@@ -56,31 +91,60 @@ public abstract class Process {
 	 * 
 	 * @param n
 	 *            String value of the process's name
+	 * @param arrivalT
+	 *            Double value of the process arrival time into the CPU
+	 * @throws InvalidTimeException
 	 */
-	public Process(String n) {
+	public Process(String n, double arrivalT) throws InvalidTimeException {
 		randomBurstTime();
 		name = n;
 		waitTimeAssigned = false;
 		turnAroundTimeAssigned = false;
 		isFinished = false;
+		arrivalTime = arrivalT;
+	}
+
+	/**
+	 * Assigns a random burst time and an auto-generated name with the specified
+	 * arrival time
+	 * 
+	 * @param arrivalT
+	 *            Double value of the time the process arrived in the cpu
+	 * @throws InvalidTimeException
+	 *             Invalid Arrival Time
+	 */
+	public Process(double arrivalT) throws InvalidTimeException {
+		randomBurstTime();
+		generateName();
+		waitTimeAssigned = false;
+		turnAroundTimeAssigned = false;
+		isFinished = false;
+		setArrivalTime(arrivalT);
 	}
 
 	/**
 	 * Assigns a random burst time and an auto-generated name
+	 * 
+	 * @throws InvalidTimeException
+	 *             An unexpected error occurs in this case, and you should contact
+	 *             the creator of this method asap for fixing
 	 */
-	public Process() {
+	public Process() throws InvalidTimeException {
 		randomBurstTime();
-		name = String.format("P%d", processNameGen++);
+		generateName();
 		waitTimeAssigned = false;
 		turnAroundTimeAssigned = false;
 		isFinished = false;
+		randomArrivalTime();
 	}
-	
+
 	/**
 	 * Copy constructor
-	 * @param p The process to deep copy
+	 * 
+	 * @param p
+	 *            The process to deep copy
 	 */
-	protected Process(Process p) {
+	public Process(Process p) {
 		name = p.getName();
 		burstTime = p.getBurstTime();
 		waitTimeAssigned = p.isWaitTimeAssigned();
@@ -88,6 +152,44 @@ public abstract class Process {
 		isFinished = p.isFinished();
 		waitTime = p.getWaitTime();
 		turnAroundTime = p.getTurnAroundTime();
+		arrivalTime = p.getArrivalTime();
+	}
+
+	/**
+	 * Creates a process with a random arrival time
+	 * 
+	 * @param burstT
+	 *            Burst time of this process
+	 * @param n
+	 *            Name of this process
+	 * @throws InvalidTimeException
+	 *             Invalid burst time
+	 */
+	public Process(double burstT, String n) throws InvalidTimeException {
+		setBurstTime(burstT);
+		name = n;
+		waitTimeAssigned = false;
+		turnAroundTimeAssigned = false;
+		isFinished = false;
+		randomArrivalTime();
+	}
+
+	/**
+	 * Creates a process with only a custom name, all other fields are randomized
+	 * 
+	 * @param n
+	 *            Custom process name
+	 * @throws InvalidTimeException
+	 *             An unexpected error occurs in this case, and you should contact
+	 *             the creator of this method asap for fixing
+	 */
+	public Process(String n) throws InvalidTimeException {
+		randomBurstTime();
+		name = n;
+		waitTimeAssigned = false;
+		turnAroundTimeAssigned = false;
+		isFinished = false;
+		randomArrivalTime();
 	}
 
 	/**
@@ -119,15 +221,6 @@ public abstract class Process {
 	}
 
 	/**
-	 * Sets burst time to a random value
-	 */
-	public void randomBurstTime() {
-		Random r = new Random();
-		r = new Random(r.nextLong());
-		burstTime = Math.abs(Math.ceil(r.nextDouble() * 100)) + 1;
-	}
-
-	/**
 	 * @return Double value of the burst time.
 	 */
 	public double getBurstTime() {
@@ -138,7 +231,7 @@ public abstract class Process {
 	 * @param bTime
 	 *            Double value of the proposed new burst time.
 	 * @throws InvalidTimeException
-	 *             Thrown if the bTime is <= 0
+	 *             Thrown if the bTime is < 0
 	 */
 	public void setBurstTime(double bTime) throws InvalidTimeException {
 		if (bTime < 0) {
@@ -198,6 +291,68 @@ public abstract class Process {
 		} else {
 			turnAroundTime = tAroundTime;
 			turnAroundTimeAssigned = true;
+		}
+	}
+
+	/**
+	 * 
+	 * @return Arrival time of the process.
+	 */
+	public double getArrivalTime() {
+		return arrivalTime;
+	}
+
+	/**
+	 * Resets the value of the process name generator to 0.
+	 */
+	public static void resetProcessNameGen() {
+		processNameGen = 0;
+	}
+
+	/**
+	 * Sets arrival time to a random value
+	 * 
+	 * @throws InvalidTimeException
+	 *             An unexpected error occurs in this case, and you should contact
+	 *             the creator of this method asap for fixing
+	 */
+	protected void randomArrivalTime() throws InvalidTimeException {
+		Random r = new Random();
+		r = new Random(r.nextLong());
+		setArrivalTime(Math.abs(Math.ceil(r.nextDouble() * 100)) + 1);
+	}
+
+	/**
+	 * Sets burst time to a random value
+	 * 
+	 * @throws InvalidTimeException
+	 *             An unexpected error occurs in this case, and you should contact
+	 *             the creator of this method asap for fixing
+	 */
+	public void randomBurstTime() throws InvalidTimeException {
+		Random r = new Random();
+		r = new Random(r.nextLong());
+		setBurstTime(Math.abs(Math.ceil(r.nextDouble() * 100)) + 1);
+	}
+
+	/**
+	 * Used to create a new process name based on the name generation field
+	 */
+	private void generateName() {
+		name = String.format("P%d", processNameGen++);
+	}
+
+	/**
+	 * @param at
+	 *            Checks the validity of a potential new Arrival Time
+	 * @throws InvalidTimeException
+	 *             Arrival time is found invalid
+	 */
+	private void setArrivalTime(double at) throws InvalidTimeException {
+		if (at < 0) {
+			throw new InvalidTimeException();
+		} else {
+			arrivalTime = at;
 		}
 	}
 

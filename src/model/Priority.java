@@ -10,7 +10,11 @@ public class Priority extends Scheduler<PrioritizedProcess>  {
 			size = 10;
 		}
 		for(int i = 0; i < size; i++) {
-			processes.add(new PrioritizedProcess());
+			try {
+				processes.add(new PrioritizedProcess());
+			} catch (InvalidTimeException e) {
+				e.printStackTrace();
+			}
 			//TODO Add logic for priority
 		}
 	}

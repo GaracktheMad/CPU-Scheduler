@@ -1,6 +1,12 @@
 package model;
 
+/**
+ * Thrown when a value for any of the process times are invalid.
+ * @author Peter Vukas
+ *
+ */
 public class InvalidTimeException extends Exception {
+
 
 	/**
 	 * 

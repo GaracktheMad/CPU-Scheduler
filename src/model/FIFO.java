@@ -24,7 +24,11 @@ public class FIFO extends Scheduler<ArrivalProcess>  {
 	public ArrayList<ArrivalProcess> run() {
 		double waitTimeProcessor = 0;
 		double turnAroundProcessor = 0;
-		processes.sort(new ArrivalProcess());
+		try {
+			processes.sort(new ArrivalProcess());
+		} catch (InvalidTimeException e1) {
+			e1.printStackTrace();
+		}
 		for (ArrivalProcess ap : processes) {
 			try {
 				ap.setWaitTime(waitTimeProcessor);
@@ -48,20 +52,27 @@ public class FIFO extends Scheduler<ArrivalProcess>  {
 	@Override
 	public void populateProcessList(int size) {
 		for (int i = 0; i < size; i++) {
-			processes.add(new ArrivalProcess());
+			try {
+				processes.add(new ArrivalProcess());
+			} catch (InvalidTimeException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
+
 	/* (non-Javadoc)
-	 * @see model.UsesArrivalProcesses#addProcess(model.ArrivalProcess)
+	 * @see model.Scheduler#addProcess(model.Process)
 	 */
+	@Override
 	public void addProcess(ArrivalProcess ap) {
 		processes.add(ap);
 	}
 
 	/* (non-Javadoc)
-	 * @see model.UsesArrivalProcesses#removeProcess(model.ArrivalProcess)
+	 * @see model.Scheduler#removeProcess(model.Process)
 	 */
+	@Override
 	public boolean removeProcess(ArrivalProcess ap) {
 		return processes.remove(ap);
 	}

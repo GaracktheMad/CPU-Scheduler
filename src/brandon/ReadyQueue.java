@@ -9,31 +9,52 @@ import model.InvalidTimeException;
  */
 public class ReadyQueue {
 
-	private ArrivalProcess current; // The process currently being processed by the queue
-	double wait; // Total waiting time of all processes
-	double turnaround; // Total turnaround time of all processes
+	/**
+	 * The process currently being processed by the queue
+	 */
+	private ArrivalProcess current;
+	/**
+	 * Total waiting time of all processes
+	 */
+	public double wait;
+	/**
+	 * Total turnaround time of all processes
+	 */
+	public double turnaround;
 
-	ReadyQueue() {
+	/**
+	 * Creates a new ready queue
+	 */
+	public ReadyQueue() {
 		current = null;
 		wait = 0;
 		turnaround = 0;
 	}
 
-	// Reset the queue for the start of a new algorithm
+	/**
+	 * Reset the queue for the start of a new algorithm
+	 */
 	public void clear() {
 		wait = 0;
 		turnaround = 0;
 		current = null;
 	}
 
-	// Boolean for checking if the queue is empty
+	/**
+	 * Boolean for checking if the queue is empty
+	 * 
+	 * @return True if the queue is empty
+	 */
 	public boolean isEmpty() {
 		return current == null;
 	}
 
-	/*
+	/**
 	 * Inserting a process with respect to the Shortest Time Remaining First. THIS
 	 * PROCESS IS DEPENDANT ON THE REST OF THE CODE RECOGNIZING NOT TO PASS A NULL
+	 * 
+	 * @param arrivalProcess
+	 *            Process to be added to the queue
 	 */
 	public void addSRTF(ArrivalProcess arrivalProcess) {
 
@@ -53,8 +74,9 @@ public class ReadyQueue {
 					previous.next = arrivalProcess; // Appending the process to the end of the list
 				}
 				break;
-			} else if (temp.getBurstTime() > arrivalProcess.getBurstTime()) { // If the next process has a greater burst time, we
-																	// append the process
+			} else if (temp.getBurstTime() > arrivalProcess.getBurstTime()) { // If the next process has a greater burst
+																				// time, we
+				// append the process
 
 				if (previous != null) {
 					// A process is being inserted between two others
@@ -75,42 +97,48 @@ public class ReadyQueue {
 		}
 	}
 
-	/*
+	/**
 	 * This method will be called after every "second passing" in the processor. It
 	 * will decrement the burst time of the of the current process by one second.
 	 * THIS PROCESS IS DEPENDANT ON THE USER NEVER INPUTTING A PROCESS WITH BURST
 	 * TIME 0
 	 */
-	public void SRTFExecuteProcess() throws InvalidTimeException {
-		System.out.println("burst of current process " + current.getBurstTime());
-		// If the current process has been completed, we start processing the next
-		if (current.getBurstTime() == 0) {
-			/*
-			 * Add the wait and turnaround of the completed process to the accumulative wait
-			 * and turnaround values of the ready queue
-			 */
-			wait += current.getWaitTime();
-			turnaround += current.getTurnAroundTime();
-			current = current.next;
-			if (current != null) {
-				current.setBurstTime(current.getBurstTime() - 1); // Decrement the burst time of the new current process
-				current.setTurnAroundTime(current.getTurnAroundTime() + 1); // Increment the turnaround time of the new
-																			// current process
-			}
-		} else {
-			current.setBurstTime(current.getBurstTime() - 1); // Decrement the burst time
-			current.setTurnAroundTime(current.getTurnAroundTime() + 1); // Increment the turnaround time of the current
+	public void SRTFExecuteProcess() {
+		try {
+			System.out.println("burst of current process " + current.getBurstTime());
+			// If the current process has been completed, we start processing the next
+			if (current.getBurstTime() == 0) {
+				/*
+				 * Add the wait and turnaround of the completed process to the accumulative wait
+				 * and turnaround values of the ready queue
+				 */
+				wait += current.getWaitTime();
+				turnaround += current.getTurnAroundTime();
+				current = current.next;
+				if (current != null) {
+					current.setBurstTime(current.getBurstTime() - 1); // Decrement the burst time of the new current
 																		// process
-		}
-
-		// Increase the waiting and turnaround time of all processes left in the queue
-		if (current != null) {
-			ArrivalProcess next = current.next;
-			while (next != null) {
-				next.setWaitTime(next.getWaitTime() + 1);
-				next.setTurnAroundTime(next.getTurnAroundTime() + 1);
-				next = next.next;
+					current.setTurnAroundTime(current.getTurnAroundTime() + 1); // Increment the turnaround time of the
+																				// new
+																				// current process
+				}
+			} else {
+				current.setBurstTime(current.getBurstTime() - 1); // Decrement the burst time
+				current.setTurnAroundTime(current.getTurnAroundTime() + 1); // Increment the turnaround time of the
+																			// current
+																			// process
 			}
+
+			// Increase the waiting and turnaround time of all processes left in the queue
+			if (current != null) {
+				ArrivalProcess next = current.next;
+				while (next != null) {
+					next.setWaitTime(next.getWaitTime() + 1);
+					next.setTurnAroundTime(next.getTurnAroundTime() + 1);
+					next = next.next;
+				}
+			}
+		} catch (InvalidTimeException e) {
 		}
 	}
 
