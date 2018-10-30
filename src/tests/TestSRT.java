@@ -1,4 +1,4 @@
-package brandon;
+package tests;
 
 import java.util.ArrayList;
 import model.Process;
@@ -6,7 +6,7 @@ import model.SRT;
 import model.ArrivalProcess;
 import model.InvalidTimeException;
 
-public class Demo {
+public class TestSRT {
 
 	public static void main(String args[]) {
 		// ArrivalProcess p1 = new ArrivalProcess(new Process(8,0)),

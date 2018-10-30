@@ -2,8 +2,6 @@ package model;
 
 import java.util.ArrayList;
 
-import brandon.ReadyQueue;
-
 /**
  * SRT CPU scheduler algorithm
  * 
@@ -25,7 +23,7 @@ public class SRT {
 	/**
 	 * The ready queue
 	 */
-	private ReadyQueue rq;
+	private SRTReadyQueue rq;
 
 	//
 	/**
@@ -43,7 +41,7 @@ public class SRT {
 	public SRT(ArrayList<ArrivalProcess> processes) {
 		this.processes = processes;
 		pNum = processes.size();
-		rq = new ReadyQueue();
+		rq = new SRTReadyQueue();
 	}
 
 	//

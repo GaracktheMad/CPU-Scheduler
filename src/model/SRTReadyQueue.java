@@ -1,13 +1,10 @@
-package brandon;
-
-import model.ArrivalProcess;
-import model.InvalidTimeException;
+package model;
 
 /**
  * @author Brandon Ruiz
  *
  */
-public class ReadyQueue {
+public class SRTReadyQueue {
 
 	/**
 	 * The process currently being processed by the queue
@@ -25,7 +22,7 @@ public class ReadyQueue {
 	/**
 	 * Creates a new ready queue
 	 */
-	public ReadyQueue() {
+	public SRTReadyQueue() {
 		current = null;
 		wait = 0;
 		turnaround = 0;

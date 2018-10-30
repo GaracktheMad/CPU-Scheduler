@@ -34,7 +34,7 @@ public class Process {
 	/**
 	 * Used for auto name generation for default constructor
 	 */
-	private static int processNameGen = 0;
+	private static int processNameGen = 1;
 	/**
 	 * When true, indicates a wait time has been added to this process
 	 */
@@ -58,7 +58,7 @@ public class Process {
 	 * @throws InvalidTimeException
 	 *             Thrown when the burst time or arrival time is invalid
 	 */
-	public Process(double burstTime, String name, double arrivalT) throws InvalidTimeException {
+	public Process(String name, double burstTime, double arrivalT) throws InvalidTimeException {
 		setBurstTime(burstTime);
 		this.name = name;
 		waitTimeAssigned = false;
@@ -306,7 +306,7 @@ public class Process {
 	 * Resets the value of the process name generator to 0.
 	 */
 	public static void resetProcessNameGen() {
-		processNameGen = 0;
+		processNameGen = 1;
 	}
 
 	/**

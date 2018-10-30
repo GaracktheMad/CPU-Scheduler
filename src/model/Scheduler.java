@@ -35,22 +35,6 @@ public abstract class Scheduler<N extends Process> implements CalcAverages<N> {
 	}
 
 	/**
-	 * Populates the process list with auto generated processes.
-	 * 
-	 * @param size
-	 *            An integer > 0 representing the amount of generated processes
-	 *            desired. If this value is <= 0, it will be replaced with 10.
-	 */
-	public abstract void populateProcessList(int size);
-
-	/**
-	 * The algorithm which determines the order in which processes are run
-	 * 
-	 * @return An array list with the order of processes running
-	 */
-	public abstract ArrayList<N> run();
-
-	/**
 	 * @return Average wait time if it's been calculated. Otherwise, it will return
 	 *         a -1 if a successful calculation did not occur.
 	 */
@@ -85,6 +69,13 @@ public abstract class Scheduler<N extends Process> implements CalcAverages<N> {
 	}
 
 	/**
+	 * Removes ALL processes from the current list. This cannot be undone.
+	 */
+	public void clearProcesses() {
+		processes.clear();
+	}
+
+	/**
 	 * @return A deep copied list of all processes which can be changed without
 	 *         issue to this scheduler algorithm
 	 */
@@ -102,4 +93,20 @@ public abstract class Scheduler<N extends Process> implements CalcAverages<N> {
 	 * @return True if the process was found and removed.
 	 */
 	public abstract boolean removeProcess(N p);
+
+	/**
+	 * Populates the process list with auto generated processes.
+	 * 
+	 * @param size
+	 *            An integer > 0 representing the amount of generated processes
+	 *            desired. If this value is <= 0, it will be replaced with 10.
+	 */
+	public abstract void populateProcessList(int size);
+
+	/**
+	 * The algorithm which determines the order in which processes are run
+	 * 
+	 * @return An array list with the order of processes running
+	 */
+	public abstract ArrayList<N> run();
 }
