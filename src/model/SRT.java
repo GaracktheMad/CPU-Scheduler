@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * SRT CPU scheduler algorithm
@@ -11,21 +12,15 @@ import java.util.ArrayList;
 public class SRT {
 
 	/**
-	 * The list of processes of which will be popped onto the queue
+	 * The list of processes of which will be popped onto the queue & the queue
 	 */
-	private ArrayList<ArrivalProcess> processes;
+	private ArrayList<ArrivalProcess> newProcesses, queue;
 
 	/**
-	 * The number of processes to be processed
+	 * The gantt chart
 	 */
-	private int pNum;
+	private Gantt gantt;
 
-	/**
-	 * The ready queue
-	 */
-	private SRTReadyQueue rq;
-
-	//
 	/**
 	 * The value of the current CPU time during processing. This value is global so
 	 * that it need no frequently be passed to dispatchJob() from getTimes()
@@ -39,25 +34,32 @@ public class SRT {
 	 *            algorithm
 	 */
 	public SRT(ArrayList<ArrivalProcess> processes) {
-		this.processes = processes;
-		pNum = processes.size();
-		rq = new SRTReadyQueue();
+		this.newProcesses = processes;
+		queue = new ArrayList<ArrivalProcess>();
 	}
 
-	//
 	/**
 	 * CPU scheduler algorithm & times of processing - Shortest remaining time first
 	 * 
 	 * @return Return the average values (accumulated value from the ready
 	 *         queue/pNum)
+	 * @throws InvalidTimeException 
 	 */
-	public double[] getSRTFTimes() {
-		rq.clear(); // Clear previous wait and turnaround times to avoid overlap
+	public void process() throws InvalidTimeException {
+		queue = new ArrayList<ArrivalProcess>(); // Clear the queue
 		while (true) {
-			if (processes.size() == 0)
+			if (newProcesses.size() == 0){
+				gantt.end((int)time);
 				break;
-			time = getShortestProcessTime(); // Set time to next shortest arrival time of the processes
-
+			}
+			double newTime = getShortestProcessTime(); // Set new time to next shortest arrival time of the processes
+			
+			//If the CPU was idle, put that section on the gantt chart and update the time
+			if(newTime != time) {
+				gantt.addProcess("Idle", (int) time);
+				time = newTime;
+			}
+			
 			// All processes of the next shortest arrival time are put on the ready queue to
 			// be processed
 			dispatchJob();
@@ -69,9 +71,9 @@ public class SRT {
 
 			while (true) {
 				System.out.println(time);
-				time++; // Simulate the passing of time in the CPU by incrementing the time
-				rq.SRTFExecuteProcess(); // Execute the current process; increment wait and turnaround times of
+				executeProcess(); // Execute the current process; increment wait and turnaround times of
 											// processes appropriately
+				time++; // Simulate the passing of time in the CPU by incrementing the time
 				dispatchJob(); // Check if any jobs have arrived to be put on the ready queue
 
 				/*
@@ -81,11 +83,10 @@ public class SRT {
 				 * process time to simulate waiting for the next arrival. This is the line time
 				 * = getShortestProcessTime();
 				 */
-				if (rq.isEmpty())
+				if (queue.size() == 0)
 					break;
 			}
 		}
-		return new double[] { rq.wait / pNum, rq.turnaround / pNum };
 	}
 
 	//
@@ -95,12 +96,35 @@ public class SRT {
 	 * @return The shortest arrival time
 	 */
 	public double getShortestProcessTime() {
-		double shortestTime = processes.get(0).getArrivalTime();
-		for (int i = 1; i < processes.size(); i++) {
-			if (processes.get(i).getArrivalTime() < shortestTime)
-				shortestTime = processes.get(i).getArrivalTime();
+		double shortestTime = newProcesses.get(0).getArrivalTime();
+		for (int i = 1; i < newProcesses.size(); i++) {
+			if (newProcesses.get(i).getArrivalTime() < shortestTime)
+				shortestTime = newProcesses.get(i).getArrivalTime();
 		}
 		return shortestTime;
+	}
+	
+	/**
+	 * Execute the running process, represented by the process of index 0, by decrementing the burst time
+	 * @throws InvalidTimeException 
+	 */
+	public void executeProcess() throws InvalidTimeException {
+		//If the process executing has been completed it is removed
+		if(queue.get(0).getBurstTime() == 0) queue.remove(0);
+		
+		queue.get(0).setBurstTime(queue.get(0).getBurstTime() - 1);	//Decrement the burst time
+		queue.get(0).setTurnAroundTime(queue.get(0).getTurnAroundTime() + 1);	//Increment the burst time
+		
+		//Increment the waiting and turnaround times of all nonexecuting processes in the queue
+		for(int i = 1; i < queue.size(); i++) {
+			queue.get(i).setTurnAroundTime(queue.get(i).getTurnAroundTime() + 1);
+			queue.get(i).setWaitTime(queue.get(i).getWaitTime() + 1);
+		}
+		
+		//Update the gantt chart if the current process has been changed
+		if(!gantt.newSection(queue.get(0).getName())) 
+			gantt.addProcess(queue.get(0).getName(), (int)time);
+		
 	}
 
 	/**
@@ -108,11 +132,13 @@ public class SRT {
 	 */
 	public void dispatchJob() {
 		int i = 0;
-		while (i < processes.size()) {
+		while (i < newProcesses.size()) {
 			// If a process' arrival time equals the current CPU time, it is put onto the
-			// queue
-			if (processes.get(i).getArrivalTime() == time)
-				rq.addSRTF(processes.remove(i));
+			// queue, which is then sorted by burst time
+			if (newProcesses.get(i).getArrivalTime() == time) {
+				queue.add(newProcesses.remove(i));
+				Collections.sort(queue);
+			}
 			else
 				i++;
 		}
