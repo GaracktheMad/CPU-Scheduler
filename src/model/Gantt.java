@@ -8,26 +8,38 @@ import java.util.ArrayList;
  * @author Brandon Ruiz
  * 
  */
-
 public class Gantt {
 
-	//The array of gantt chart sections
+	/**
+	 * The array of gantt chart sections
+	 */
 	ArrayList<GanttProcess> chart;
 	
-	//The id of the process in the most recent section
+	/**
+	 * The id of the process in the most recent section
+	 */
 	String lastProcess;
 
+	/**
+	 * Initializes the array list
+	 */
 	public Gantt() {
 		chart = new ArrayList<GanttProcess>();
 	}
 	
-	//Wipes the chart clear
+	/**
+	 * Wipes the chart of all data
+	 */
 	public void clear() {
 		chart = new ArrayList<GanttProcess>();
 		lastProcess = "";
 	}
 
-	//Add new section to the chart
+	/**
+	 * Add new section to the chart
+	 * @param name Name of the process to be displayed
+	 * @param time End Time
+	 */
 	public void addProcess(String name, int time) {
 		if (!chart.isEmpty())
 			chart.get(chart.size() - 1).setEndTime(time);
@@ -35,18 +47,28 @@ public class Gantt {
 		lastProcess = name;
 	}
 	
-	//Check if a section is being changed - for SRT
+	/**Check if a section is being changed - for SRT
+	 * @param name Name of the process to be checked
+	 * @return True if the names are the same
+	 */
 	public boolean newSection(String name) {
-		return lastProcess == name;
+		return lastProcess.equals(name);
 	}
 	
-	//Finishes the last section of the chart
+	/**
+	 * Finishes the last section of the chart
+	 * 
+	 * @param time
+	 *            End time
+	 */
 	public void end(int time) {
 		if (!chart.isEmpty())
 			chart.get(chart.size() - 1).setEndTime(time);
 	}
 	
-	//Displays all elements of the chart
+	/**
+	 * Displays all elements of the chart
+	 */
 	public void display() {
 		for(int i = 0; i < chart.size(); i++) {
 			GanttProcess gp = chart.get(i);

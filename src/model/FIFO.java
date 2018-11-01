@@ -4,10 +4,11 @@ import java.util.ArrayList;
 
 /**
  * Processes are simulated using a First-In-First-Out algorithm
+ * 
  * @author Peter Vukas
  *
  */
-public class FIFO extends Scheduler<ArrivalProcess>  {
+public class FIFO extends Scheduler<ArrivalProcess> {
 
 	/**
 	 * Initializes the list of processes
@@ -17,36 +18,42 @@ public class FIFO extends Scheduler<ArrivalProcess>  {
 		processes = new ArrayList<ArrivalProcess>();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see model.Scheduler#run()
 	 */
 	@Override
 	public ArrayList<ArrivalProcess> run() {
-		double waitTimeProcessor = 0;
-		double turnAroundProcessor = 0;
+		double waitTimeProcessor = 0; // Used in wait time calc
+		double turnAroundProcessor = 0; // Used in TA calc
 		try {
-			processes.sort(new ArrivalProcess());
-		} catch (InvalidTimeException e1) {
-			e1.printStackTrace();
+			processes.sort(new ArrivalProcess()); // Sorts processes by arrival time
+		} catch (InvalidTimeException e1) {// Exception which should never throw
+			System.out.println("UH-OH! UNEXPECTED ERROR ALERT! FIX IT");
 		}
-		for (ArrivalProcess ap : processes) {
+		for (ArrivalProcess ap : processes) {// Algorithmic loop
 			try {
-				ap.setWaitTime(waitTimeProcessor);
-				turnAroundProcessor += ap.getBurstTime();
-				ap.setTurnAroundTime(turnAroundProcessor);
+				ap.setWaitTime(waitTimeProcessor); // Sets the calculated wait time
+				turnAroundProcessor += ap.getBurstTime();// Turnaround = Last turnaround + burst time
+				ap.setTurnAroundTime(turnAroundProcessor); // Sets the calc'd TA
 			} catch (InvalidTimeException e) {
-				return null;
+				return null; // This should never happen. It it occurs a painful bug has happened or math
+								// broke again
 			}
-			waitTimeProcessor += ap.getBurstTime();
+			waitTimeProcessor += ap.getBurstTime();// The next wait time is the current wait time + the current burst
+													// time
 		}
-		boolean noError = averageCalc();
+		boolean noError = averageCalc(); // Calculates the average values for both Turnaround and wait
 		if (noError == false) {
-			return null;
+			return null; // This should only occur if a wait time or turn around time wasn't added
 		}
-		return getProcesses();
+		return getProcesses(); // Returns a copy of the current array
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see model.Scheduler#populateProcessList(int)
 	 */
 	@Override
@@ -60,8 +67,9 @@ public class FIFO extends Scheduler<ArrivalProcess>  {
 		}
 	}
 
-
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see model.Scheduler#addProcess(model.Process)
 	 */
 	@Override
@@ -69,7 +77,9 @@ public class FIFO extends Scheduler<ArrivalProcess>  {
 		processes.add(ap);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see model.Scheduler#removeProcess(model.Process)
 	 */
 	@Override
@@ -77,7 +87,9 @@ public class FIFO extends Scheduler<ArrivalProcess>  {
 		return processes.remove(ap);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see model.Scheduler#getProcesses()
 	 */
 	@Override
