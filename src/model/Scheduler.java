@@ -25,6 +25,10 @@ public abstract class Scheduler<N extends Process> implements CalcAverages<N> {
 	 * of the array list
 	 */
 	protected double averageTurnAroundTime;
+	/**
+	 * A gantt chart generated during run()
+	 */
+	protected Gantt gantt;
 
 	/**
 	 * Initializes the process list
@@ -32,6 +36,7 @@ public abstract class Scheduler<N extends Process> implements CalcAverages<N> {
 	Scheduler() {
 		averageWaitTime = -1;
 		averageTurnAroundTime = -1;
+		gantt = new Gantt();
 	}
 
 	/**
@@ -73,6 +78,13 @@ public abstract class Scheduler<N extends Process> implements CalcAverages<N> {
 	 */
 	public void clearProcesses() {
 		processes.clear();
+	}
+	
+	/**
+	 * Access the gantt chart
+	 */
+	public Gantt getGantt() {
+		return gantt;
 	}
 
 	/**
