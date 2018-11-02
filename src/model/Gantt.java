@@ -13,7 +13,7 @@ public class Gantt {
 	/**
 	 * The array of gantt chart sections
 	 */
-	ArrayList<GanttProcess> chart;
+	ArrayList<GanttSection> chart;
 	
 	/**
 	 * The id of the process in the most recent section
@@ -24,14 +24,14 @@ public class Gantt {
 	 * Initializes the array list
 	 */
 	public Gantt() {
-		chart = new ArrayList<GanttProcess>();
+		chart = new ArrayList<GanttSection>();
 	}
 	
 	/**
 	 * Wipes the chart of all data
 	 */
 	public void clear() {
-		chart = new ArrayList<GanttProcess>();
+		chart = new ArrayList<GanttSection>();
 		lastProcess = "";
 	}
 
@@ -40,10 +40,10 @@ public class Gantt {
 	 * @param name Name of the process to be displayed
 	 * @param time End Time
 	 */
-	public void addProcess(String name, int time) {
+	public void addProcess(String name, double time) {
 		if (!chart.isEmpty())
 			chart.get(chart.size() - 1).setEndTime(time);
-		chart.add(new GanttProcess(name, time));
+		chart.add(new GanttSection(name, time));
 		lastProcess = name;
 	}
 	
@@ -71,7 +71,7 @@ public class Gantt {
 	 */
 	public void display() {
 		for(int i = 0; i < chart.size(); i++) {
-			GanttProcess gp = chart.get(i);
+			GanttSection gp = chart.get(i);
 			System.out.println(gp.getName() + ":	" + gp.getStartTime() + " - " + gp.getEndTime());
 		}
 	}

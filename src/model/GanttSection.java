@@ -7,7 +7,7 @@ package model;
  * @author Brandon Ruiz
  * 
  */
-public class GanttProcess {
+public class GanttSection {
 
 	/**
 	 * Process name
@@ -19,7 +19,7 @@ public class GanttProcess {
 	/**
 	 * The end time of a period in which a process is processed
 	 */
-	private int startTime, endTime;
+	private double startTime, endTime;
 
 	/**
 	 * @param n
@@ -27,7 +27,7 @@ public class GanttProcess {
 	 * @param startTime
 	 *            Process start time
 	 */
-	public GanttProcess(String n, int startTime) {
+	public GanttSection(String n, double startTime) {
 		this.n = n;
 		this.startTime = startTime;
 		endTime = startTime;
@@ -43,14 +43,14 @@ public class GanttProcess {
 	/**
 	 * @return Value of the start time
 	 */
-	public int getStartTime() {
+	public double getStartTime() {
 		return startTime;
 	}
 
 	/**
 	 * @return Value of the end time
 	 */
-	public int getEndTime() {
+	public double getEndTime() {
 		return endTime;
 	}
 
@@ -60,7 +60,7 @@ public class GanttProcess {
 	 * @param endTime
 	 *            Value of the end time to be set
 	 */
-	public void setEndTime(int endTime) {
+	public void setEndTime(double endTime) {
 		this.endTime = endTime;
 	}
 
