@@ -10,15 +10,35 @@ import java.util.Collections;
  */
 public class SJF extends Scheduler<BurstProcess>   {
 	
+	/**
+	 * Constructor - nothing passed
+	 */
 	public SJF() {
 		super();
 		processes = new ArrayList<BurstProcess>();
 	}
 	
+	/**
+	 * Constructor - list of processes passed
+	 * @param burst process list
+	 */
+	public SJF(ArrayList<BurstProcess> processes) {
+		super();
+		this.processes = processes;
+	}
+	
+	/**
+	 * Process addition
+	 * @param new burst process
+	 */
 	public void addProcess(BurstProcess bp) {
 		processes.add(bp);
 	}
 
+	/**
+	 * Generate a series of random burst processes
+	 * @param Number of processes to be generated
+	 */
 	@Override
 	public void populateProcessList(int size) {
 		for (int i = 0; i < size; i++) {
@@ -30,6 +50,10 @@ public class SJF extends Scheduler<BurstProcess>   {
 		}	
 	}
 
+	/**
+	 * Deep copy of the array list
+	 * @return the array list copy
+	 */
 	@Override
 	public ArrayList<BurstProcess> getProcesses() {
 		ArrayList<BurstProcess> returnable = new ArrayList<>();
@@ -39,13 +63,16 @@ public class SJF extends Scheduler<BurstProcess>   {
 		return returnable;
 	}
 
+	/**
+	 * Execute the processes in an SJF algorithm
+	 */
 	@Override
 	public ArrayList<BurstProcess> run() {
 		//An array of terminated processes, the returned array
 		ArrayList<BurstProcess> terminated = new ArrayList<BurstProcess>();	
 		
-		for(Process p: processes) 
-			System.out.println(p.getName() + ":	" + p.getBurstTime() + " : " + p.getArrivalTime());
+//		for(Process p: processes) 
+//			System.out.println(p.getName() + ":	" + p.getBurstTime() + " : " + p.getArrivalTime());
 		
 		Collections.sort(processes);
 		
@@ -56,7 +83,7 @@ public class SJF extends Scheduler<BurstProcess>   {
 			
 			//If the CPU was idle, move forward the time so that a process is available
 			if(idle) {
-				gantt.addProcess("Idle", time);
+				gantt.addSection("Idle", time);
 				time = getShortestArrival(processes);
 			}
 			
@@ -69,7 +96,7 @@ public class SJF extends Scheduler<BurstProcess>   {
 						p.setWaitTime(time);
 						p.setTurnAroundTime(p.getBurstTime() + time);
 						//System.out.println(p.getWaitTime() + " : " + p.getTurnAroundTime());
-						gantt.addProcess(p.getName(), time);
+						gantt.addSection(p.getName(), time);
 						time += p.getBurstTime();
 						terminated.add(p);
 						processes.remove(p);
@@ -81,7 +108,8 @@ public class SJF extends Scheduler<BurstProcess>   {
 				}
 			}
 		}
-		
+		gantt.end(time);
+		processes = terminated;
 		return terminated;
 	}
 
@@ -91,7 +119,11 @@ public class SJF extends Scheduler<BurstProcess>   {
 		return false;
 	}
 	
-	//A process that loops through the queue to find when the next process will arrive
+	/**
+	 * A process that loops through the queue to find the next process with the shortest arrival time
+	 * @param processes
+	 * @return the shortest arrival time
+	 */
 	public int getShortestArrival(ArrayList<BurstProcess> processes) {
 		int time = Integer.MAX_VALUE;
 		for(Process p: processes) {

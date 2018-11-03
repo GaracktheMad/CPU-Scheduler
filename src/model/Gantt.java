@@ -40,7 +40,7 @@ public class Gantt {
 	 * @param name Name of the process to be displayed
 	 * @param time End Time
 	 */
-	public void addProcess(String name, double time) {
+	public void addSection(String name, double time) {
 		if (!chart.isEmpty())
 			chart.get(chart.size() - 1).setEndTime(time);
 		chart.add(new GanttSection(name, time));
@@ -61,7 +61,7 @@ public class Gantt {
 	 * @param time
 	 *            End time
 	 */
-	public void end(int time) {
+	public void end(double time) {
 		if (!chart.isEmpty())
 			chart.get(chart.size() - 1).setEndTime(time);
 	}

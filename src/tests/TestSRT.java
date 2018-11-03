@@ -2,45 +2,28 @@ package tests;
 
 import java.util.ArrayList;
 import model.Process;
+import model.SJF;
 import model.SRT;
 import model.ArrivalProcess;
+import model.BurstProcess;
+import model.CalcAverages;
 import model.InvalidTimeException;
 
 public class TestSRT {
 
-	public static void main(String args[]) {
-		// ArrivalProcess p1 = new ArrivalProcess(new Process(8,0)),
-		// p2 = new ArrivalProcess(new Process(4,1)),
-		// p3 = new ArrivalProcess(new Process(9,2)),
-		// p4 = new ArrivalProcess(new Process(5,3));
-		ArrivalProcess p1, p2, p3, p4, p5;
-		try {
-			p1 = new ArrivalProcess(new Process(5, 1));
-			p2 = new ArrivalProcess(new Process(1, 2));
-			p3 = new ArrivalProcess(new Process(3, 3));
-			p4 = new ArrivalProcess(new Process(2, 1));
-			p5 = new ArrivalProcess(new Process(1, 15));
-			ArrayList<ArrivalProcess> processes = new ArrayList<ArrivalProcess>();
-			processes.add(p1);
-			processes.add(p2);
-			processes.add(p3);
-			processes.add(p4);
-			processes.add(p5);
-
-			SRT test = new SRT(processes);
-
-			double[] results = null;
-			results = test.getSRTFTimes();
-
-			/*
-			 * System.out.println(p2.wait); System.out.println(p2.turnaround);
-			 * System.out.println();
-			 */
-			System.out.println(results[0]);
-			System.out.println(results[1]);
-		} catch (InvalidTimeException e) {
-			e.printStackTrace();
-		}
+	public static void main(String args[]) throws InvalidTimeException {
+		SRT srt = new SRT();
+		srt.populateProcessList(10);
+		srt.run();
+		
+		ArrayList<ArrivalProcess> processes = srt.getProcesses();
+		
+		System.out.println();
+		srt.getGantt().display();
+		
+		
+		System.out.println(srt.averageWait(processes));
+		System.out.println(srt.averageTurnAround(processes));
 
 	}
 
