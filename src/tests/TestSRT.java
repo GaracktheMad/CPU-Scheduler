@@ -21,7 +21,6 @@ public class TestSRT {
 		System.out.println();
 		srt.getGantt().display();
 		
-		
 		System.out.println(srt.averageWait(processes));
 		System.out.println(srt.averageTurnAround(processes));
 

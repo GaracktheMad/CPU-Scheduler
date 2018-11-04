@@ -94,11 +94,10 @@ public class PrioritizedProcess extends Process
 	 */
 	@Override
 	public int compareTo(PrioritizedProcess p) {
-		if (priority == p.getPriority()) {
+		if (getArrivalTime() == p.getArrivalTime()) {
 			return 0;
-		} else if (priority < p.getPriority()) {
+		} else if (getArrivalTime() < p.getArrivalTime()) {
 			return -1;
-
 		} else {
 			return 1;
 		}
@@ -111,9 +110,9 @@ public class PrioritizedProcess extends Process
 	 */
 	@Override
 	public int compare(PrioritizedProcess p1, PrioritizedProcess p2) {
-		if (p1.getPriority() == p2.getPriority()) {
+		if (p1.getArrivalTime() == p2.getArrivalTime()) {
 			return 0;
-		} else if (p1.getPriority() < p2.getPriority()) {
+		} else if (p1.getArrivalTime() < p2.getArrivalTime()) {
 			return -1;
 
 		} else {
