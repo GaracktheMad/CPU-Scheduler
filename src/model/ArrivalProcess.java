@@ -18,7 +18,10 @@ public class ArrivalProcess extends Process implements Comparable<ArrivalProcess
 
 	/**
 	 * Assigns a random burst time, arrival time and an auto-generated name
-	 * @throws InvalidTimeException An unexpected error occurs in this case, and you should contact the creator of this method asap for fixing
+	 * 
+	 * @throws InvalidTimeException
+	 *             An unexpected error occurs in this case, and you should contact
+	 *             the creator of this method asap for fixing
 	 */
 	public ArrivalProcess() throws InvalidTimeException {
 		super();
