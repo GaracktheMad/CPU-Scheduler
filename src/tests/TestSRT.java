@@ -1,12 +1,8 @@
 package tests;
 
 import java.util.ArrayList;
-import model.Process;
-import model.SJF;
 import model.SRT;
 import model.ArrivalProcess;
-import model.BurstProcess;
-import model.CalcAverages;
 import model.InvalidTimeException;
 
 public class TestSRT {

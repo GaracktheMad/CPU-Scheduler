@@ -1,8 +1,5 @@
 package tests;
 
-import java.util.ArrayList;
-
-import model.BurstProcess;
 import model.SJF;
 
 public class TestSJF {
@@ -12,7 +9,7 @@ public class TestSJF {
 		sjf.populateProcessList(10);
 		sjf.run();
 		
-		ArrayList<BurstProcess> processes = sjf.getProcesses();
+		//ArrayList<BurstProcess> processes = sjf.getProcesses();
 		
 		System.out.println();
 		sjf.getGantt().display();

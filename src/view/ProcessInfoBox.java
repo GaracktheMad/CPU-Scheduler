@@ -3,21 +3,42 @@ package view;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 
 /**
+ * Creates a HBox filled with all the objects needed to identify a process.
+ * 
  * @author Peter Vukas
  *
  */
-public class ProcessInfoBox {
-	public final HBox container;
+public class ProcessInfoBox extends HBox {
+	/**
+	 * Field where the user can enter the name of the process to be specified
+	 */
 	private TextField processName;
+	/**
+	 * Field where the user can enter the burst time of the process to be specified
+	 */
 	private TextField burstTime;
+	/**
+	 * Field where the user can enter the priority of the process to be specified
+	 */
 	private TextField priorityBox;
+	/**
+	 * Will display the wait time of the process when calculated.
+	 */
 	private Label waitTime;
+	/**
+	 * Will display the turn around time of the process when calculated.
+	 */
 	private Label turnAroundTime;
+	/**
+	 * A flag used to indicate calculations for priority algorithms are being done.
+	 */
 	public static boolean isPriorityMode = false;
 
+	/**
+	 * Initializes all fields and constructs the container
+	 */
 	public ProcessInfoBox() {
 		processName = new TextField();
 		burstTime = new TextField();
@@ -25,34 +46,61 @@ public class ProcessInfoBox {
 		if (isPriorityMode == false) {
 			priorityBox.setVisible(false);
 		}
-		waitTime = new Label("Not Calculated");
-		turnAroundTime = new Label("Not Calculated");
-		container = new HBox();
-		container.setSpacing(10);
-		container.getChildren().addAll(processName, burstTime, waitTime, turnAroundTime);
-		if (isPriorityMode == false) {
-			priorityBox.setVisible(false);
-		} else {
-			container.getChildren().add(priorityBox);
+		waitTime = new Label("Not Calculated"); // States the obvious
+		turnAroundTime = new Label("Not Calculated"); // States the obvious
+		getChildren().addAll(processName, burstTime, waitTime, turnAroundTime);
+		if (isPriorityMode == true) { // Checks the priority mode flag
+			getChildren().add(priorityBox);
 		}
 	}
 
+	/**
+	 * If the isPriorityMode flag has changed, and you don't want to generate a new
+	 * object, use this method to activate the priority fields.
+	 */
+	public void priorityModeHasChanged() {
+		if (isPriorityMode == false) { // Checks the priority mode flag
+			getChildren().remove(priorityBox);
+		} else {
+			if (getChildren().contains(priorityBox) == false) {
+				getChildren().add(priorityBox);
+			}
+		}
+	}
+
+	/**
+	 * @param taTime
+	 *            The turn around time of this process to be displayed to the user
+	 */
 	public void setTurnAroundTime(double taTime) {
 		turnAroundTime.setText(String.format("%.2f", taTime));
 	}
 
+	/**
+	 * @param waitTime
+	 *            The wait time of this process to be displayed to the user
+	 */
 	public void setWaitTime(double waitTime) {
 		turnAroundTime.setText(String.format("%.2f", waitTime));
 	}
 
+	/**
+	 * @return The string contained in the burst time text box
+	 */
 	public String getBurstTime() {
 		return burstTime.getText();
 	}
 
+	/**
+	 * @return The string contained in the process name text box
+	 */
 	public String getProcessName() {
 		return processName.getText();
 	}
 
+	/**
+	 * @return The string contained in the priority text box
+	 */
 	public String getPriority() {
 		return priorityBox.getText();
 	}

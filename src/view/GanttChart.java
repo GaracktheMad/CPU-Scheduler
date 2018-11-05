@@ -4,14 +4,23 @@ import java.util.ArrayList;
 
 import javafx.scene.layout.HBox;
 
-public class GanttChart {
-	public final HBox container;
+/**
+ * Converts an array of gantt boxes into a HBox filled with them sorted by their end times
+ * @author Peter Vukas
+ *
+ */
+public class GanttChart extends HBox{
 
+	/**
+	 * Constructs a gantt chart HBox. Recreating it should be done through creating a new instance again
+	 * @param ganttBoxes A list of the ALL gantt boxes to be added into the chart.
+	 */
 	public GanttChart(ArrayList<GanttBox> ganttBoxes) {
-		ganttBoxes.sort(new GanttBox(null, 0));
-		container = new HBox();
+		super();
+		getChildren().add(new GanttBox("", 0));
+		ganttBoxes.sort(new GanttBox("", 0));
 		for (GanttBox gb : ganttBoxes) {
-			container.getChildren().add(gb.shell);
+			getChildren().add(gb);
 		}
 	}
 
