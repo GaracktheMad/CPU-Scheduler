@@ -1,5 +1,7 @@
 package view;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -58,8 +60,20 @@ public class SelectionsBox extends VBox {
 	 *            The maximum amount of processes the user can select
 	 * @param maxQuantum
 	 *            The maximum quantum value the user can select
+	 * @param start
+	 *            An event handler for when the "Start" button is clicked
+	 * @param randomize
+	 *            An event handler for when the user requests random burst times
+	 * @param algorithmSelection
+	 *            An event handler for when the user selects a new algorithm
+	 * @param quantumSelection
+	 *            An event handler for when the user selects a new quantum value
+	 * @param processNumSelection
+	 *            An event handler for when the number of processes is changed
 	 */
-	public SelectionsBox(int maxProcesses, int maxQuantum) {
+	public SelectionsBox(int maxProcesses, int maxQuantum, EventHandler<ActionEvent> start,
+			EventHandler<ActionEvent> randomize, EventHandler<ActionEvent> algorithmSelection,
+			EventHandler<ActionEvent> quantumSelection, EventHandler<ActionEvent> processNumSelection) {
 		algorithmBox = new ComboBox<String>();
 		algorithmBox.getItems().addAll("First in First Out", "Shortest Job First",
 				// "Priority",
@@ -89,6 +103,7 @@ public class SelectionsBox extends VBox {
 		rows[3].setSpacing(10);
 		rows[3].getChildren().addAll(randomizerBtn, startBtn);
 		getChildren().addAll(rows[0], rows[1], rows[2], rows[3]);
+		setActionHandlers(start, randomize, algorithmSelection, quantumSelection, processNumSelection);
 	}
 
 	/**
@@ -115,5 +130,67 @@ public class SelectionsBox extends VBox {
 			return -1;
 		}
 		return quantumBox.getValue();
+	}
+
+	/**
+	 * @param start
+	 *            An event handler for when the "Start" button is clicked
+	 */
+	public void setStartButtonActionHandler(EventHandler<ActionEvent> start) {
+		startBtn.setOnAction(start);
+	}
+
+	/**
+	 * @param randomize
+	 *            An event handler for when the user requests random burst times
+	 */
+	public void setRandomizerButtonActionHandler(EventHandler<ActionEvent> randomize) {
+		randomizerBtn.setOnAction(randomize);
+	}
+
+	/**
+	 * @param quantumSelection
+	 *            An event handler for when the user selects a new quantum value
+	 */
+	public void setQuantumBoxActionHandler(EventHandler<ActionEvent> quantumSelection) {
+		quantumBox.setOnAction(quantumSelection);
+	}
+
+	/**
+	 * @param algorithmSelection
+	 *            An event handler for when the user selects a new algorithm
+	 */
+	public void setAlgorithmBoxActionHandler(EventHandler<ActionEvent> algorithmSelection) {
+		algorithmBox.setOnAction(algorithmSelection);
+	}
+
+	/**
+	 * @param processNumSelection
+	 *            An event handler for when the number of processes is changed
+	 */
+	public void setActionHandler(EventHandler<ActionEvent> processNumSelection) {
+		processNumBox.setOnAction(processNumSelection);
+	}
+
+	/**
+	 * @param start
+	 *            An event handler for when the "Start" button is clicked
+	 * @param randomize
+	 *            An event handler for when the user requests random burst times
+	 * @param algorithmSelection
+	 *            An event handler for when the user selects a new algorithm
+	 * @param quantumSelection
+	 *            An event handler for when the user selects a new quantum value
+	 * @param processNumSelection
+	 *            An event handler for when the number of processes is changed
+	 */
+	public void setActionHandlers(EventHandler<ActionEvent> start, EventHandler<ActionEvent> randomize,
+			EventHandler<ActionEvent> algorithmSelection, EventHandler<ActionEvent> quantumSelection,
+			EventHandler<ActionEvent> processNumSelection) {
+		startBtn.setOnAction(start);
+		randomizerBtn.setOnAction(randomize);
+		algorithmBox.setOnAction(algorithmSelection);
+		processNumBox.setOnAction(processNumSelection);
+		quantumBox.setOnAction(quantumSelection);
 	}
 }

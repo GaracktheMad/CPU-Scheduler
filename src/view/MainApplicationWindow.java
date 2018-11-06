@@ -2,6 +2,8 @@ package view;
 
 import java.util.ArrayList;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
@@ -17,7 +19,7 @@ import javafx.scene.layout.VBox;
 public class MainApplicationWindow extends BorderPane {
 
 	/**
-	 * All of the process info hboxes 
+	 * All of the process info hboxes
 	 */
 	private VBox processList;
 	/**
@@ -42,20 +44,59 @@ public class MainApplicationWindow extends BorderPane {
 	private ArrayList<ProcessInfoBox> processes;
 
 	/**
-	 *  Creates a main application with 10 max processes and a max quantum value of 10
+	 * Creates a main application with 10 max processes and a max quantum value of
+	 * 10
+	 * 
+	 * @param maxProcesses
+	 *            The maximum amount of processes the user can select
+	 * @param maxQuantum
+	 *            The maximum quantum value the user can select
+	 * @param start
+	 *            An event handler for when the "Start" button is clicked
+	 * @param randomize
+	 *            An event handler for when the user requests random burst times
+	 * @param algorithmSelection
+	 *            An event handler for when the user selects a new algorithm
+	 * @param quantumSelection
+	 *            An event handler for when the user selects a new quantum value
+	 * @param processNumSelection
+	 *            An event handler for when the number of processes is changed
 	 */
-	public MainApplicationWindow() {
-		selections = new SelectionsBox(10, 10);
+	public MainApplicationWindow(EventHandler<ActionEvent> start, EventHandler<ActionEvent> randomize,
+			EventHandler<ActionEvent> algorithmSelection, EventHandler<ActionEvent> quantumSelection,
+			EventHandler<ActionEvent> processNumSelection) {
+		selections = new SelectionsBox(10, 10, start, randomize, algorithmSelection, quantumSelection,
+				processNumSelection);
 		setup();
 	}
 
 	/**
 	 * Creates a main application with specified max processes and quantum values
-	 * @param maxProcesses The total processes the user is expected to select
-	 * @param maxQuantum The max quantum value used for round-robin calculations
+	 * 
+	 * @param maxProcesses
+	 *            The total processes the user is expected to select
+	 * @param maxQuantum
+	 *            The max quantum value used for round-robin calculations
+	 * @param maxProcesses
+	 *            The maximum amount of processes the user can select
+	 * @param maxQuantum
+	 *            The maximum quantum value the user can select
+	 * @param start
+	 *            An event handler for when the "Start" button is clicked
+	 * @param randomize
+	 *            An event handler for when the user requests random burst times
+	 * @param algorithmSelection
+	 *            An event handler for when the user selects a new algorithm
+	 * @param quantumSelection
+	 *            An event handler for when the user selects a new quantum value
+	 * @param processNumSelection
+	 *            An event handler for when the number of processes is changed
 	 */
-	public MainApplicationWindow(int maxProcesses, int maxQuantum) {
-		selections = new SelectionsBox(maxProcesses, maxQuantum);
+	public MainApplicationWindow(int maxProcesses, int maxQuantum, EventHandler<ActionEvent> start,
+			EventHandler<ActionEvent> randomize, EventHandler<ActionEvent> algorithmSelection,
+			EventHandler<ActionEvent> quantumSelection, EventHandler<ActionEvent> processNumSelection) {
+		selections = new SelectionsBox(maxProcesses, maxQuantum, start, randomize, algorithmSelection, quantumSelection,
+				processNumSelection);
 		setup();
 	}
 
@@ -74,8 +115,11 @@ public class MainApplicationWindow extends BorderPane {
 	}
 
 	/**
-	 * Resets the contents of process list and fills them with the specified number of process boxes.
-	 * @param numberOfProcesses Number of processes to be displayed.
+	 * Resets the contents of process list and fills them with the specified number
+	 * of process boxes.
+	 * 
+	 * @param numberOfProcesses
+	 *            Number of processes to be displayed.
 	 */
 	private void refreshProcessList(int numberOfProcesses) {
 		processList.getChildren().clear();
@@ -92,8 +136,13 @@ public class MainApplicationWindow extends BorderPane {
 	}
 
 	/**
-	 * Takes the premade GanttBoxes and makes them into a sorted chart. All objects to be displayed in this chart should be in this array list as it cannot be appended later.
-	 * @param allGanttBoxes An array list of all gantt boxes to be displayed. .sort is called automatically.
+	 * Takes the premade GanttBoxes and makes them into a sorted chart. All objects
+	 * to be displayed in this chart should be in this array list as it cannot be
+	 * appended later.
+	 * 
+	 * @param allGanttBoxes
+	 *            An array list of all gantt boxes to be displayed. .sort is called
+	 *            automatically.
 	 */
 	public void setGanttList(ArrayList<GanttBox> allGanttBoxes) {
 		chart = new GanttChart(allGanttBoxes);
