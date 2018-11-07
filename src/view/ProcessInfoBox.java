@@ -16,6 +16,11 @@ public class ProcessInfoBox extends HBox {
 	 */
 	private TextField processName;
 	/**
+	 * Field where the user can enter the arrival time of the process to be
+	 * specified
+	 */
+	private TextField arrivalTime;
+	/**
 	 * Field where the user can enter the burst time of the process to be specified
 	 */
 	private TextField burstTime;
@@ -43,12 +48,13 @@ public class ProcessInfoBox extends HBox {
 		processName = new TextField();
 		burstTime = new TextField();
 		priorityBox = new TextField();
+		arrivalTime = new TextField();
 		if (isPriorityMode == false) {
 			priorityBox.setVisible(false);
 		}
 		waitTime = new Label("Not Calculated"); // States the obvious
 		turnAroundTime = new Label("Not Calculated"); // States the obvious
-		getChildren().addAll(processName, burstTime, waitTime, turnAroundTime);
+		getChildren().addAll(processName, burstTime, arrivalTime, waitTime, turnAroundTime);
 		if (isPriorityMode == true) { // Checks the priority mode flag
 			getChildren().add(priorityBox);
 		}
@@ -69,16 +75,15 @@ public class ProcessInfoBox extends HBox {
 	}
 
 	/**
-	 * @param taTime
-	 *            The turn around time of this process to be displayed to the user
+	 * @param taTime The turn around time of this process to be displayed to the
+	 *               user
 	 */
 	public void setTurnAroundTime(double taTime) {
 		turnAroundTime.setText(String.format("%.2f", taTime));
 	}
 
 	/**
-	 * @param waitTime
-	 *            The wait time of this process to be displayed to the user
+	 * @param waitTime The wait time of this process to be displayed to the user
 	 */
 	public void setWaitTime(double waitTime) {
 		turnAroundTime.setText(String.format("%.2f", waitTime));
@@ -103,6 +108,13 @@ public class ProcessInfoBox extends HBox {
 	 */
 	public String getPriority() {
 		return priorityBox.getText();
+	}
+
+	/**
+	 * @return The string contained in the arrival time text box
+	 */
+	public String getArrivalTime() {
+		return arrivalTime.getText();
 	}
 
 }

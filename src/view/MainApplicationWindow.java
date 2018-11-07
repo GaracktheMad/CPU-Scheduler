@@ -33,7 +33,7 @@ public class MainApplicationWindow extends BorderPane {
 	/**
 	 * The selections menu
 	 */
-	private SelectionsBox selections;
+	public SelectionsBox selections;
 	/**
 	 * The top label used in the process list
 	 */
@@ -41,61 +41,56 @@ public class MainApplicationWindow extends BorderPane {
 	/**
 	 * The processes contained in the process list
 	 */
-	private ArrayList<ProcessInfoBox> processes;
+	public ArrayList<ProcessInfoBox> processes;
 
 	/**
 	 * Creates a main application with 10 max processes and a max quantum value of
 	 * 10
 	 * 
-	 * @param maxProcesses
-	 *            The maximum amount of processes the user can select
-	 * @param maxQuantum
-	 *            The maximum quantum value the user can select
-	 * @param start
-	 *            An event handler for when the "Start" button is clicked
-	 * @param randomize
-	 *            An event handler for when the user requests random burst times
-	 * @param algorithmSelection
-	 *            An event handler for when the user selects a new algorithm
-	 * @param quantumSelection
-	 *            An event handler for when the user selects a new quantum value
-	 * @param processNumSelection
-	 *            An event handler for when the number of processes is changed
+	 * @param maxProcesses        The maximum amount of processes the user can
+	 *                            select
+	 * @param maxQuantum          The maximum quantum value the user can select
+	 * @param start               An event handler for when the "Start" button is
+	 *                            clicked
+	 * @param randomize           An event handler for when the user requests random
+	 *                            burst times
+	 * @param algorithmSelection  An event handler for when the user selects a new
+	 *                            algorithm
+	 * @param quantumSelection    An event handler for when the user selects a new
+	 *                            quantum value
+	 * @param processNumSelection An event handler for when the number of processes
+	 *                            is changed
 	 */
 	public MainApplicationWindow(EventHandler<ActionEvent> start, EventHandler<ActionEvent> randomize,
-			EventHandler<ActionEvent> algorithmSelection, EventHandler<ActionEvent> quantumSelection,
-			EventHandler<ActionEvent> processNumSelection) {
-		selections = new SelectionsBox(10, 10, start, randomize, algorithmSelection, quantumSelection,
-				processNumSelection);
+			EventHandler<ActionEvent> algorithmSelection, EventHandler<ActionEvent> processNumSelection) {
+		selections = new SelectionsBox(10, 10, start, randomize, algorithmSelection, processNumSelection);
 		setup();
 	}
 
 	/**
 	 * Creates a main application with specified max processes and quantum values
 	 * 
-	 * @param maxProcesses
-	 *            The total processes the user is expected to select
-	 * @param maxQuantum
-	 *            The max quantum value used for round-robin calculations
-	 * @param maxProcesses
-	 *            The maximum amount of processes the user can select
-	 * @param maxQuantum
-	 *            The maximum quantum value the user can select
-	 * @param start
-	 *            An event handler for when the "Start" button is clicked
-	 * @param randomize
-	 *            An event handler for when the user requests random burst times
-	 * @param algorithmSelection
-	 *            An event handler for when the user selects a new algorithm
-	 * @param quantumSelection
-	 *            An event handler for when the user selects a new quantum value
-	 * @param processNumSelection
-	 *            An event handler for when the number of processes is changed
+	 * @param maxProcesses        The total processes the user is expected to select
+	 * @param maxQuantum          The max quantum value used for round-robin
+	 *                            calculations
+	 * @param maxProcesses        The maximum amount of processes the user can
+	 *                            select
+	 * @param maxQuantum          The maximum quantum value the user can select
+	 * @param start               An event handler for when the "Start" button is
+	 *                            clicked
+	 * @param randomize           An event handler for when the user requests random
+	 *                            burst times
+	 * @param algorithmSelection  An event handler for when the user selects a new
+	 *                            algorithm
+	 * @param quantumSelection    An event handler for when the user selects a new
+	 *                            quantum value
+	 * @param processNumSelection An event handler for when the number of processes
+	 *                            is changed
 	 */
 	public MainApplicationWindow(int maxProcesses, int maxQuantum, EventHandler<ActionEvent> start,
 			EventHandler<ActionEvent> randomize, EventHandler<ActionEvent> algorithmSelection,
-			EventHandler<ActionEvent> quantumSelection, EventHandler<ActionEvent> processNumSelection) {
-		selections = new SelectionsBox(maxProcesses, maxQuantum, start, randomize, algorithmSelection, quantumSelection,
+			EventHandler<ActionEvent> processNumSelection) {
+		selections = new SelectionsBox(maxProcesses, maxQuantum, start, randomize, algorithmSelection,
 				processNumSelection);
 		setup();
 	}
@@ -118,14 +113,14 @@ public class MainApplicationWindow extends BorderPane {
 	 * Resets the contents of process list and fills them with the specified number
 	 * of process boxes.
 	 * 
-	 * @param numberOfProcesses
-	 *            Number of processes to be displayed.
+	 * @param numberOfProcesses Number of processes to be displayed.
 	 */
-	private void refreshProcessList(int numberOfProcesses) {
+	public void refreshProcessList(int numberOfProcesses) {
 		processList.getChildren().clear();
 		processes.clear();
-		topLabel.getChildren().addAll(new Label("Processes"), new Label("Burst Time"), new Label("Turn Around Time"),
-				new Label("Wait Time"));
+		topLabel.getChildren().clear();
+		topLabel.getChildren().addAll(new Label("Processes"), new Label("Burst Time"), new Label("Arrival Time"),
+				new Label("Turn Around Time"), new Label("Wait Time"));
 		if (ProcessInfoBox.isPriorityMode == true) {
 			topLabel.getChildren().add(new Label("Priority"));
 		}
@@ -140,12 +135,31 @@ public class MainApplicationWindow extends BorderPane {
 	 * to be displayed in this chart should be in this array list as it cannot be
 	 * appended later.
 	 * 
-	 * @param allGanttBoxes
-	 *            An array list of all gantt boxes to be displayed. .sort is called
-	 *            automatically.
+	 * @param allGanttBoxes An array list of all gantt boxes to be displayed. .sort
+	 *                      is called automatically.
 	 */
 	public void setGanttList(ArrayList<GanttBox> allGanttBoxes) {
 		chart = new GanttChart(allGanttBoxes);
 	}
 
+	/**
+	 * Gives the shorthand of the algorithm the user has selected
+	 * 
+	 * @return FIFO, SJF, P, RR, SRTF, or "" if nothing is selected
+	 */
+	public String selectedProcess() {
+		if (selections.getAlgorithm().equals("FIRST IN FIRST OUT")) {
+			return "FIFO";
+		} else if (selections.getAlgorithm().equals("SHORTEST JOB FIRST")) {
+			return "SJF";
+		} else if (selections.getAlgorithm().equals("PRIORITY")) {
+			return "P";
+		} else if (selections.getAlgorithm().equals("ROUND ROBIN")) {
+			return "RR";
+		} else if (selections.getAlgorithm().equals("SHORTEST REMAINING TIME FIRST")) {
+			return "SRTF";
+		} else {
+			return "";
+		}
+	}
 }
