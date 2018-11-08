@@ -2,14 +2,10 @@ package controller;
 
 import java.util.ArrayList;
 import model.Process;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
-import model.ArrivalProcess;
-import model.InvalidTimeException;
 import view.MainApplicationWindow;
-import view.ProcessInfoBox;
 
 /**
  * @author Peter Vukas
@@ -42,6 +38,7 @@ public class ViewController {
 		processes = new ArrayList<Process>();
 	}
 
+	
 	/**
 	 * @author Peter Vukas
 	 *
@@ -57,18 +54,12 @@ public class ViewController {
 		public void handle(ActionEvent arg0) {
 			if (currentAlgorithm.equals("FIFO") || currentAlgorithm.equals("RR") || currentAlgorithm.equals("SRTF")) {
 				processes.clear();
-				for (ProcessInfoBox p : frame.processes) {
-					try {
-						processes.add(new ArrivalProcess(new Process(p.getProcessName(),
-								Double.valueOf(p.getBurstTime()), Double.valueOf(p.getArrivalTime()))));
-					} catch (NumberFormatException | InvalidTimeException e) {
-						break;
-					}
+				//TODO change to new format for PIB
 				}
 			}
 		}
 
-	}
+	
 
 	/**
 	 * @author Peter Vukas
@@ -105,8 +96,7 @@ public class ViewController {
 				frame.selections.toggleQuantum();
 			}
 			if (currentAlgorithm.equals("P") ^ previousAlgorithm.equals("P")) {
-				ProcessInfoBox.isPriorityMode = !ProcessInfoBox.isPriorityMode;
-				frame.refreshProcessList(frame.selections.getNumberOfProcesses());
+				//TODO finish additions for changed version of PIB
 			}
 		}
 	}
@@ -124,7 +114,7 @@ public class ViewController {
 		 */
 		@Override
 		public void handle(ActionEvent arg0) {
-			frame.refreshProcessList(frame.selections.getNumberOfProcesses());
+			//TODO rework logic to work with new PIB
 		}
 
 	}
