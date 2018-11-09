@@ -2,6 +2,9 @@ package model;
 
 import java.util.ArrayList;
 
+import javafx.scene.layout.HBox;
+import view.GanttBox;
+
 /**
  * Gantt chart creation class
  * 
@@ -75,5 +78,13 @@ public class Gantt {
 			System.out.println(gp.getName() + ":	" + gp.getStartTime() + " - " + gp.getEndTime());
 		}
 	}
+	
+//	public HBox createChart() {
+//		HBox hb = new HBox();
+//		for(GanttSection g: chart) {
+//			hb.getChildren().add(new GanttBox(g.getName(), g.getEndTime()).shell);
+//		}
+//		return hb;
+//	}
 
 }

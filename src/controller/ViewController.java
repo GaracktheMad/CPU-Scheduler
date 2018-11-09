@@ -2,12 +2,19 @@ package controller;
 
 import java.util.ArrayList;
 import model.Process;
-
+import model.RoundRobin;
+import model.SJF;
+import model.SRT;
+import model.Scheduler;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
 import model.ArrivalProcess;
+import model.BurstProcess;
+import model.FIFO;
 import model.InvalidTimeException;
+import model.PrioritizedProcess;
+import model.Priority;
 import view.MainApplicationWindow;
 import view.ProcessInfoBox;
 
@@ -26,11 +33,23 @@ public class ViewController {
 	 * 
 	 */
 	ArrayList<Process> processes;
+	
+	/**
+	 * 
+	 */
+	ArrayList<PrioritizedProcess> pProcesses;
+	ArrayList<BurstProcess> bProcesses;
+	ArrayList<ArrivalProcess> aProcesses;
 
 	/**
 	 * 
 	 */
 	String currentAlgorithm;
+	
+	/**
+	 * 
+	 */
+	Scheduler scheduler;
 
 	/**
 	 * @param stage
@@ -40,6 +59,9 @@ public class ViewController {
 				new HandleProcesses());
 		currentAlgorithm = frame.selectedProcess();
 		processes = new ArrayList<Process>();
+		pProcesses = new ArrayList<PrioritizedProcess>();
+		bProcesses = new ArrayList<BurstProcess>();
+		aProcesses = new ArrayList<ArrivalProcess>();
 	}
 
 	/**
@@ -71,7 +93,7 @@ public class ViewController {
 	}
 
 	/**
-	 * @author Peter Vukas
+	 * @author Brandon Ruiz
 	 *
 	 */
 	public class HandleRandom implements EventHandler<ActionEvent> {
@@ -83,7 +105,41 @@ public class ViewController {
 		 */
 		@Override
 		public void handle(ActionEvent arg0) {
-			// TODO Logic for Random button
+			try {
+				if (currentAlgorithm.equals("P")) {
+					pProcesses.clear();
+					for (int i = 0; i < 10; i++) {
+						pProcesses.add(new PrioritizedProcess());
+					}
+					scheduler = new Priority(pProcesses);
+					scheduler.run();
+				}
+				else if (currentAlgorithm.equals("SJF")) {
+					bProcesses.clear();
+					for (int i = 0; i < 10; i++) {
+						bProcesses.add(new BurstProcess());
+					}
+					scheduler = new SJF(bProcesses);
+					scheduler.run();
+				}
+				else {
+					aProcesses.clear();
+					for (int i = 0; i < 10; i++) {
+						aProcesses.add(new ArrivalProcess());
+					}
+					if(currentAlgorithm.equals("FIFO")) {
+						scheduler = new FIFO(aProcesses);
+					}
+					else if(currentAlgorithm.equals("SRTF")) {
+						scheduler = new SRT(aProcesses);
+					}
+					else scheduler = new RoundRobin(aProcesses);
+					
+					scheduler.run();
+				}
+			} catch (InvalidTimeException e) {
+				e.printStackTrace();
+			}
 		}
 
 	}

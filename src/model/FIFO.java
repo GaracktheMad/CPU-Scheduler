@@ -17,6 +17,11 @@ public class FIFO extends Scheduler<ArrivalProcess> {
 		super();
 		processes = new ArrayList<ArrivalProcess>();
 	}
+	
+	public FIFO(ArrayList<ArrivalProcess> processes) {
+		super();
+		this.processes = processes;
+	}
 
 	/*
 	 * (non-Javadoc)

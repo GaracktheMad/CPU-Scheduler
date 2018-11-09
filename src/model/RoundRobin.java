@@ -5,13 +5,26 @@ import java.util.ArrayList;
 public class RoundRobin extends Scheduler<ArrivalProcess> {
 	private double timeQuantum;
 
-	public RoundRobin(double timeQuantum) {super();
+	public RoundRobin(double timeQuantum) {
+		super();
 		this.timeQuantum = timeQuantum;
 	}
 
 	public RoundRobin() {
 		super();
 		timeQuantum = 5;
+	}
+	
+	public RoundRobin(ArrayList<ArrivalProcess> processes, double timeQuantum) {
+		super();
+		this.timeQuantum = timeQuantum;
+		this.processes = processes;
+	}
+	
+	public RoundRobin(ArrayList<ArrivalProcess> processes) {
+		super();
+		timeQuantum = 5;
+		this.processes = processes;
 	}
 
 	public double getTimeQuantum() {
