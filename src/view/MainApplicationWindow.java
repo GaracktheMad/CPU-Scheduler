@@ -9,6 +9,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import model.CalcAverages;
 
 /**
  * A borderpane containing all the application's formatted main elements
@@ -124,6 +125,7 @@ public class MainApplicationWindow extends BorderPane {
 		if (ProcessInfoBox.isPriorityMode == true) {
 			topLabel.getChildren().add(new Label("Priority"));
 		}
+		processList.getChildren().add(topLabel);
 		for (int i = 1; i <= numberOfProcesses; i++) {
 			processes.add(new ProcessInfoBox());
 			processList.getChildren().add(processes.get(i - 1));
@@ -140,6 +142,10 @@ public class MainApplicationWindow extends BorderPane {
 	 */
 	public void setGanttList(ArrayList<GanttBox> allGanttBoxes) {
 		chart = new GanttChart(allGanttBoxes);
+	}
+	
+	public void setAverages(@SuppressWarnings("rawtypes") CalcAverages ca) {
+		//TODO Create an averages box to display above the gantt chart
 	}
 
 	/**

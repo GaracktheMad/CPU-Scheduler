@@ -8,6 +8,7 @@ import java.util.Comparator;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.shape.Rectangle;
 
 /**
  * A box which is used in constructing a Gantt chart
@@ -28,6 +29,10 @@ public class GanttBox extends BorderPane implements Comparator<GanttBox> {
 	 * The end time is stored into this variable for easy access by the comparator
 	 */
 	private final double sortResource;
+	/**
+	 * A rectangle whose width = endTime * 5
+	 */
+	private Rectangle ganttBox;
 
 	/**
 	 * NOTE: For any sort of preemption algorithm, assigh each time chunk for a
@@ -41,11 +46,14 @@ public class GanttBox extends BorderPane implements Comparator<GanttBox> {
 	public GanttBox(String processN, double endTime) {
 		sortResource = endTime;
 		processName = new Label(processN);
-		processName.setPrefSize(endTime * 10, 50);
-		processName.setMaxSize(endTime * 10, 50);
+		processName.setAlignment(Pos.TOP_CENTER);
 		time = new Label(String.valueOf(endTime));
 		time.setAlignment(Pos.BOTTOM_RIGHT);
-		setCenter(processName);
+		ganttBox = new Rectangle();
+		ganttBox.setWidth(endTime * 5);
+		ganttBox.setHeight(10);
+		setTop(processName);
+		setCenter(ganttBox);
 		setBottom(time);
 	}
 
