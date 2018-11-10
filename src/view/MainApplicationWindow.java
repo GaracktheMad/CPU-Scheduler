@@ -1,13 +1,14 @@
 package view;
 
 import java.util.ArrayList;
-import model.PrioritizedProcess;
-import model.BurstProcess;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
-import model.ArrivalProcess;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 /**
  * A borderpane containing all the application's formatted main elements
@@ -16,11 +17,11 @@ import model.ArrivalProcess;
  *
  */
 public class MainApplicationWindow extends BorderPane {
-	
-	private ProcessInfoBox<ArrivalProcess> pibAP;
-	private ProcessInfoBox<BurstProcess> pibBP;
-	private ProcessInfoBox<PrioritizedProcess> pibPP;
 
+	/**
+	 * All of the process info hboxes
+	 */
+	private VBox processList;
 	/**
 	 * Scroll pane for the process list VBox for larger numbers
 	 */
@@ -33,6 +34,14 @@ public class MainApplicationWindow extends BorderPane {
 	 * The selections menu
 	 */
 	public SelectionsBox selections;
+	/**
+	 * The top label used in the process list
+	 */
+	private HBox topLabel;
+	/**
+	 * The processes contained in the process list
+	 */
+	public ArrayList<ProcessInfoBox> processes;
 
 	/**
 	 * Creates a main application with 10 max processes and a max quantum value of
@@ -85,43 +94,40 @@ public class MainApplicationWindow extends BorderPane {
 				processNumSelection);
 		setup();
 	}
-	
-	/**
-	 * @param size
-	 * @return
-	 */
-	public ProcessInfoBox<PrioritizedProcess> activatePriority(int size){
-		pibPP = new ProcessInfoBox<PrioritizedProcess>(size);
-		scrolling.setContent(pibPP);
-		return pibPP;
-	}
-	/**
-	 * @param size
-	 * @return
-	 */
-	public ProcessInfoBox<BurstProcess> activateBurst(int size){
-		pibBP = new ProcessInfoBox<BurstProcess>(size);
-		scrolling.setContent(pibBP);
-		return pibBP;
-	}
-	/**
-	 * @param size
-	 * @return
-	 */
-	public ProcessInfoBox<ArrivalProcess> activateArrival(int size){
-		pibAP = new ProcessInfoBox<ArrivalProcess>(size);
-		scrolling.setContent(pibBP);
-		return pibAP;
-	}
 
 	/**
 	 * Common things between both constructors to compact code a bit
 	 */
 	private void setup() {
-		scrolling = new ScrollPane();
+		processList = new VBox(10);
+		scrolling = new ScrollPane(processList);
+		topLabel = new HBox(10);
+		processes = new ArrayList<ProcessInfoBox>();
+		refreshProcessList(1);
 		setTop(selections);
 		setCenter(scrolling);
 		setBottom(chart);
+	}
+
+	/**
+	 * Resets the contents of process list and fills them with the specified number
+	 * of process boxes.
+	 * 
+	 * @param numberOfProcesses Number of processes to be displayed.
+	 */
+	public void refreshProcessList(int numberOfProcesses) {
+		processList.getChildren().clear();
+		processes.clear();
+		topLabel.getChildren().clear();
+		topLabel.getChildren().addAll(new Label("Processes"), new Label("Burst Time"), new Label("Arrival Time"),
+				new Label("Turn Around Time"), new Label("Wait Time"));
+		if (ProcessInfoBox.isPriorityMode == true) {
+			topLabel.getChildren().add(new Label("Priority"));
+		}
+		for (int i = 1; i <= numberOfProcesses; i++) {
+			processes.add(new ProcessInfoBox());
+			processList.getChildren().add(processes.get(i - 1));
+		}
 	}
 
 	/**

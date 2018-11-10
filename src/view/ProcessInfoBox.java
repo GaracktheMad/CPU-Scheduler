@@ -1,8 +1,8 @@
 package view;
 
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import model.Process;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 
 /**
  * Creates a HBox filled with all the objects needed to identify a process.
@@ -10,48 +10,68 @@ import model.Process;
  * @author Peter Vukas
  *
  */
-public class ProcessInfoBox<T extends Process> extends TableView<T> {
-	private TableColumn<T, String> processName;
-	private TableColumn<T, String> burstTime;
-	private TableColumn<T, String> arrivalTime;
-	private TableColumn<T, String> priority;
-	private TableColumn<T, String> waitTime;
-	private TableColumn<T, String> turnAroundTime;
-	private final boolean isPriorityMode;
+public class ProcessInfoBox extends HBox {
+	/**
+	 * Field where the user can enter the name of the process to be specified
+	 */
+	private TextField processName;
+	/**
+	 * Field where the user can enter the arrival time of the process to be
+	 * specified
+	 */
+	private TextField arrivalTime;
+	/**
+	 * Field where the user can enter the burst time of the process to be specified
+	 */
+	private TextField burstTime;
+	/**
+	 * Field where the user can enter the priority of the process to be specified
+	 */
+	private TextField priorityBox;
+	/**
+	 * Will display the wait time of the process when calculated.
+	 */
+	private Label waitTime;
+	/**
+	 * Will display the turn around time of the process when calculated.
+	 */
+	private Label turnAroundTime;
+	/**
+	 * A flag used to indicate calculations for priority algorithms are being done.
+	 */
+	public static boolean isPriorityMode = false;
 
 	/**
 	 * Initializes all fields and constructs the container
 	 */
-	public ProcessInfoBox(int numberProcesses) {
-		T processDummy = null ;
-		processName = new TableColumn<T, String>("T");
-		burstTime = new TableColumn<T, String>("Burst Time");
-		arrivalTime = new TableColumn<T, String>("Arrival Time");
-		priority = new TableColumn<T, String>("Priority");
-		waitTime = new TableColumn<T, String>("Wait Time");
-		turnAroundTime = new TableColumn<T, String>("Turn Around Time");
-		waitTime.setEditable(false);
-		turnAroundTime.setEditable(false);
-		getColumns().add(processName);
-		getColumns().add(burstTime);
-		getColumns().add(arrivalTime);
-		if(processDummy instanceof model.PrioritizedProcess) {
-			isPriorityMode = true;
-			getColumns().add(priority);
-		}else {
-			isPriorityMode = false;
+	public ProcessInfoBox() {
+		processName = new TextField();
+		burstTime = new TextField();
+		priorityBox = new TextField();
+		arrivalTime = new TextField();
+		if (isPriorityMode == false) {
+			priorityBox.setVisible(false);
 		}
-		getColumns().add(waitTime);
-		getColumns().add(turnAroundTime);
-
+		waitTime = new Label("Not Calculated"); // States the obvious
+		turnAroundTime = new Label("Not Calculated"); // States the obvious
+		getChildren().addAll(processName, burstTime, arrivalTime, waitTime, turnAroundTime);
+		if (isPriorityMode == true) { // Checks the priority mode flag
+			getChildren().add(priorityBox);
+		}
 	}
 
-	
 	/**
-	 * @return True if the table is in priority mode.
+	 * If the isPriorityMode flag has changed, and you don't want to generate a new
+	 * object, use this method to activate the priority fields.
 	 */
-	public boolean isPriorityMode() {
-		return isPriorityMode;
+	public void priorityModeHasChanged() {
+		if (isPriorityMode == false) { // Checks the priority mode flag
+			getChildren().remove(priorityBox);
+		} else {
+			if (getChildren().contains(priorityBox) == false) {
+				getChildren().add(priorityBox);
+			}
+		}
 	}
 
 	/**
@@ -87,7 +107,7 @@ public class ProcessInfoBox<T extends Process> extends TableView<T> {
 	 * @return The string contained in the priority text box
 	 */
 	public String getPriority() {
-		return priority.getText();
+		return priorityBox.getText();
 	}
 
 	/**
