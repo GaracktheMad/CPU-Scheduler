@@ -6,8 +6,13 @@ import model.RoundRobin;
 import model.SJF;
 import model.SRT;
 import model.Scheduler;
+import java.util.Comparator;
+
+import model.Process;
+import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.ArrivalProcess;
 import model.BurstProcess;
@@ -22,7 +27,7 @@ import view.ProcessInfoBox;
  * @author Peter Vukas
  *
  */
-public class ViewController {
+public class ViewController extends Application {
 
 	/**
 	 * 
@@ -32,8 +37,9 @@ public class ViewController {
 	/**
 	 * 
 	 */
+
 	ArrayList<Process> processes;
-	
+
 	/**
 	 * 
 	 */
@@ -45,16 +51,14 @@ public class ViewController {
 	 * 
 	 */
 	String currentAlgorithm;
-	
+
 	/**
 	 * 
 	 */
 	Scheduler scheduler;
 
-	/**
-	 * @param stage
-	 */
-	public ViewController(Stage stage) {
+	@Override
+	public void start(Stage primaryStage) throws Exception {
 		frame = new MainApplicationWindow(new HandleStart(), new HandleRandom(), new HandleAlgorithm(),
 				new HandleProcesses());
 		currentAlgorithm = frame.selectedProcess();
@@ -62,6 +66,11 @@ public class ViewController {
 		pProcesses = new ArrayList<PrioritizedProcess>();
 		bProcesses = new ArrayList<BurstProcess>();
 		aProcesses = new ArrayList<ArrivalProcess>();
+		Scene scene = new Scene(frame, 485, 400);
+		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		primaryStage.setScene(scene);
+		primaryStage.show();
+
 	}
 
 	/**
@@ -77,19 +86,48 @@ public class ViewController {
 		 */
 		@Override
 		public void handle(ActionEvent arg0) {
+			// If the program is in FIFO, Round Robin, or Shortest Run First mode
 			if (currentAlgorithm.equals("FIFO") || currentAlgorithm.equals("RR") || currentAlgorithm.equals("SRTF")) {
-				processes.clear();
+				ArrayList<ArrivalProcess> processes = new ArrayList<ArrivalProcess>();
 				for (ProcessInfoBox p : frame.processes) {
 					try {
 						processes.add(new ArrivalProcess(new Process(p.getProcessName(),
 								Double.valueOf(p.getBurstTime()), Double.valueOf(p.getArrivalTime()))));
 					} catch (NumberFormatException | InvalidTimeException e) {
-						break;
+						return;
 					}
 				}
+				processes.sort(processes.get(0));
+				if (currentAlgorithm.equals("FIFO")) {
+
+				}
+			} else if (currentAlgorithm.equals("P")) { // If the program is in priority mode
+				ArrayList<PrioritizedProcess> processes = new ArrayList<PrioritizedProcess>();
+				for (ProcessInfoBox p : frame.processes) {
+					try {
+						processes.add(
+								new PrioritizedProcess(new Process(p.getProcessName(), Double.valueOf(p.getBurstTime()),
+										Double.valueOf(p.getArrivalTime())), Short.valueOf(p.getPriority())));
+					} catch (NumberFormatException | InvalidTimeException e) {
+						return;
+					}
+				}
+				processes.sort(processes.get(0));
+			} else if (currentAlgorithm.equals("SJF")) {// If the program is in Shortest Job First mode
+				ArrayList<BurstProcess> processes = new ArrayList<BurstProcess>();
+				for (ProcessInfoBox p : frame.processes) {
+					try {
+						processes.add(new BurstProcess(new Process(p.getProcessName(), Double.valueOf(p.getBurstTime()),
+								Double.valueOf(p.getArrivalTime()))));
+					} catch (NumberFormatException | InvalidTimeException e) {
+						return;
+					}
+				}
+				processes.sort(processes.get(0));
+			} else {
+				return;
 			}
 		}
-
 	}
 
 	/**
@@ -113,28 +151,25 @@ public class ViewController {
 					}
 					scheduler = new Priority(pProcesses);
 					scheduler.run();
-				}
-				else if (currentAlgorithm.equals("SJF")) {
+				} else if (currentAlgorithm.equals("SJF")) {
 					bProcesses.clear();
 					for (int i = 0; i < 10; i++) {
 						bProcesses.add(new BurstProcess());
 					}
 					scheduler = new SJF(bProcesses);
 					scheduler.run();
-				}
-				else {
+				} else {
 					aProcesses.clear();
 					for (int i = 0; i < 10; i++) {
 						aProcesses.add(new ArrivalProcess());
 					}
-					if(currentAlgorithm.equals("FIFO")) {
+					if (currentAlgorithm.equals("FIFO")) {
 						scheduler = new FIFO(aProcesses);
-					}
-					else if(currentAlgorithm.equals("SRTF")) {
+					} else if (currentAlgorithm.equals("SRTF")) {
 						scheduler = new SRT(aProcesses);
-					}
-					else scheduler = new RoundRobin(aProcesses);
-					
+					} else
+						scheduler = new RoundRobin(aProcesses);
+
 					scheduler.run();
 				}
 			} catch (InvalidTimeException e) {

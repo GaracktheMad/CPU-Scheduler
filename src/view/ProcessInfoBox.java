@@ -49,6 +49,7 @@ public class ProcessInfoBox extends HBox {
 		burstTime = new TextField();
 		priorityBox = new TextField();
 		arrivalTime = new TextField();
+		
 		if (isPriorityMode == false) {
 			priorityBox.setVisible(false);
 		}
@@ -58,6 +59,15 @@ public class ProcessInfoBox extends HBox {
 		if (isPriorityMode == true) { // Checks the priority mode flag
 			getChildren().add(priorityBox);
 		}
+		
+		//Brandon time
+		processName.setPrefWidth(75);
+		burstTime.setPrefWidth(75);
+		priorityBox.setPrefWidth(75);
+		arrivalTime.setPrefWidth(75);
+		setSpacing(25);
+		//Brandon time over
+		
 	}
 
 	/**

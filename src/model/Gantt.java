@@ -79,12 +79,12 @@ public class Gantt {
 		}
 	}
 	
-//	public HBox createChart() {
-//		HBox hb = new HBox();
-//		for(GanttSection g: chart) {
-//			hb.getChildren().add(new GanttBox(g.getName(), g.getEndTime()).shell);
-//		}
-//		return hb;
-//	}
+	public HBox createChart() {
+		HBox hb = new HBox();
+		for(GanttSection g: chart) {
+			hb.getChildren().add(new GanttBox(g.getName(), g.getEndTime()));
+		}
+		return hb;
+	}
 
 }

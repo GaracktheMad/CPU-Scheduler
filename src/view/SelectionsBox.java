@@ -2,6 +2,7 @@ package view;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -102,10 +103,16 @@ public class SelectionsBox extends VBox {
 		rows[0].getChildren().addAll(whatIsAlgorithmBox, algorithmBox);
 		rows[1].getChildren().addAll(whatIsProcessBox, processNumBox);
 		rows[2].getChildren().addAll(whatIsQuantumBox, quantumBox);
-		rows[3].setSpacing(10);
 		rows[3].getChildren().addAll(randomizerBtn, startBtn);
 		getChildren().addAll(rows[0], rows[1], rows[2], rows[3]);
 		setActionHandlers(start, randomize, algorithmSelection, processNumSelection);
+		
+		//Brandon time
+		rows[0].setSpacing(101);
+		rows[1].setSpacing(75);
+		rows[2].setSpacing(118);
+		rows[3].setSpacing(35);
+		//Brandon time over
 	}
 
 	/**

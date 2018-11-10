@@ -9,6 +9,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import model.CalcAverages;
 
 /**
  * A borderpane containing all the application's formatted main elements
@@ -119,11 +120,29 @@ public class MainApplicationWindow extends BorderPane {
 		processList.getChildren().clear();
 		processes.clear();
 		topLabel.getChildren().clear();
-		topLabel.getChildren().addAll(new Label("Processes"), new Label("Burst Time"), new Label("Arrival Time"),
-				new Label("Turn Around Time"), new Label("Wait Time"));
+		
+		//Brandon time
+		Label processesLabel = new Label("Processes"),
+				burstLabel = new Label("Burst Time"),
+				arrivalLabel = new Label("Arrival Time"),
+				turnAroundLabel = new Label("Turnaround"),
+				waitLabel = new Label("Wait");
+		
+		processesLabel.setPrefWidth(75);
+		burstLabel.setPrefWidth(75);
+		arrivalLabel.setPrefWidth(75);
+		turnAroundLabel.setPrefWidth(75);
+		waitLabel.setPrefWidth(75);
+		
+		topLabel.getChildren().addAll(processesLabel, burstLabel, 
+				arrivalLabel, turnAroundLabel, waitLabel);
+		topLabel.setSpacing(25);
+		//Brandon time over
+		
 		if (ProcessInfoBox.isPriorityMode == true) {
 			topLabel.getChildren().add(new Label("Priority"));
 		}
+		processList.getChildren().add(topLabel);
 		for (int i = 1; i <= numberOfProcesses; i++) {
 			processes.add(new ProcessInfoBox());
 			processList.getChildren().add(processes.get(i - 1));
@@ -140,6 +159,10 @@ public class MainApplicationWindow extends BorderPane {
 	 */
 	public void setGanttList(ArrayList<GanttBox> allGanttBoxes) {
 		chart = new GanttChart(allGanttBoxes);
+	}
+	
+	public void setAverages(@SuppressWarnings("rawtypes") CalcAverages ca) {
+		//TODO Create an averages box to display above the gantt chart
 	}
 
 	/**
