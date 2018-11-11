@@ -2,7 +2,6 @@ package view;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -106,13 +105,15 @@ public class SelectionsBox extends VBox {
 		rows[3].getChildren().addAll(randomizerBtn, startBtn);
 		getChildren().addAll(rows[0], rows[1], rows[2], rows[3]);
 		setActionHandlers(start, randomize, algorithmSelection, processNumSelection);
-		
-		//Brandon time
+
+		// Brandon time
 		rows[0].setSpacing(101);
 		rows[1].setSpacing(75);
 		rows[2].setSpacing(118);
 		rows[3].setSpacing(35);
-		//Brandon time over
+		// Brandon time over
+		
+		toggleQuantum();
 	}
 
 	/**
@@ -120,7 +121,14 @@ public class SelectionsBox extends VBox {
 	 * value
 	 */
 	public void toggleQuantum() {
-		rows[3].setDisable(!rows[3].isDisable());
+		rows[2].setDisable(!rows[3].isDisable());
+	}
+	
+	/**
+	 * @return True if it IS disabled
+	 */
+	public boolean isQuantumDisable() {
+		return rows[2].isDisable();
 	}
 
 	/**

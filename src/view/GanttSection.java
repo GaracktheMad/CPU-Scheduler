@@ -1,4 +1,4 @@
-package model;
+package view;
 
 /**
  * A class that represents a section of a process' runtime Solely for the

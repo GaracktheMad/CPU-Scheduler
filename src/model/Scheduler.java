@@ -2,6 +2,8 @@ package model;
 
 import java.util.ArrayList;
 
+import view.Gantt;
+
 /**
  * * Super class of all CPU Scheduling algorithms with common variables and
  * methods. This is an abstract class and should be used accordingly.

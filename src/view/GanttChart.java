@@ -24,4 +24,11 @@ public class GanttChart extends HBox{
 		}
 	}
 
+	/**
+	 * Dummy constructor. Useful for initial declarations
+	 */
+	public GanttChart() {
+		super();
+	}
+
 }

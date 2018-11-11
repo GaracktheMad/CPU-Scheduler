@@ -6,9 +6,6 @@ import model.RoundRobin;
 import model.SJF;
 import model.SRT;
 import model.Scheduler;
-import java.util.Comparator;
-
-import model.Process;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -20,6 +17,7 @@ import model.FIFO;
 import model.InvalidTimeException;
 import model.PrioritizedProcess;
 import model.Priority;
+import view.GanttBox;
 import view.MainApplicationWindow;
 import view.ProcessInfoBox;
 
@@ -55,6 +53,7 @@ public class ViewController extends Application {
 	/**
 	 * 
 	 */
+	@SuppressWarnings("rawtypes")
 	Scheduler scheduler;
 
 	@Override
@@ -84,13 +83,14 @@ public class ViewController extends Application {
 		 * 
 		 * @see javafx.event.EventHandler#handle(javafx.event.Event)
 		 */
+		@SuppressWarnings("unchecked")
 		@Override
 		public void handle(ActionEvent arg0) {
 			// If the program is in FIFO, Round Robin, or Shortest Run First mode
 			if (currentAlgorithm.equals("FIFO") || currentAlgorithm.equals("RR") || currentAlgorithm.equals("SRTF")) {
 				ArrayList<ArrivalProcess> processes = new ArrayList<ArrivalProcess>();
 				for (ProcessInfoBox p : frame.processes) {
-					try {
+					try {// Converts data to processes
 						processes.add(new ArrivalProcess(new Process(p.getProcessName(),
 								Double.valueOf(p.getBurstTime()), Double.valueOf(p.getArrivalTime()))));
 					} catch (NumberFormatException | InvalidTimeException e) {
@@ -99,15 +99,20 @@ public class ViewController extends Application {
 				}
 				processes.sort(processes.get(0));
 				if (currentAlgorithm.equals("FIFO")) {
-
+					scheduler = new FIFO(processes);
+				} else if (currentAlgorithm.equals("RR")) {
+					scheduler = new RoundRobin(processes);
+				} else {
+					scheduler = new SRT(processes);
 				}
 			} else if (currentAlgorithm.equals("P")) { // If the program is in priority mode
 				ArrayList<PrioritizedProcess> processes = new ArrayList<PrioritizedProcess>();
 				for (ProcessInfoBox p : frame.processes) {
-					try {
+					try {// Converts data to processes
 						processes.add(
 								new PrioritizedProcess(new Process(p.getProcessName(), Double.valueOf(p.getBurstTime()),
 										Double.valueOf(p.getArrivalTime())), Short.valueOf(p.getPriority())));
+						scheduler = new Priority(processes);
 					} catch (NumberFormatException | InvalidTimeException e) {
 						return;
 					}
@@ -119,6 +124,7 @@ public class ViewController extends Application {
 					try {
 						processes.add(new BurstProcess(new Process(p.getProcessName(), Double.valueOf(p.getBurstTime()),
 								Double.valueOf(p.getArrivalTime()))));
+						scheduler = new SJF(processes);
 					} catch (NumberFormatException | InvalidTimeException e) {
 						return;
 					}
@@ -127,6 +133,21 @@ public class ViewController extends Application {
 			} else {
 				return;
 			}
+			ArrayList<Process> pal = scheduler.run();
+			for (ProcessInfoBox pib : frame.processes) {// Converts data to processes
+				for (Process p : pal) {
+					if (p.getName().equals(pib.getProcessName())) {
+						pib.setWaitTime(p.getWaitTime());
+						pib.setTurnAroundTime(p.getTurnAroundTime());
+					}
+				}
+			}
+			ArrayList<GanttBox> gantts = new ArrayList<GanttBox>();
+			for (Process p : pal) {
+				gantts.add(new GanttBox(p.getName(), p.getTurnAroundTime()));
+			}
+			frame.setAverages(scheduler);
+			frame.setGanttList(gantts);
 		}
 	}
 
@@ -150,14 +171,12 @@ public class ViewController extends Application {
 						pProcesses.add(new PrioritizedProcess());
 					}
 					scheduler = new Priority(pProcesses);
-					scheduler.run();
 				} else if (currentAlgorithm.equals("SJF")) {
 					bProcesses.clear();
 					for (int i = 0; i < 10; i++) {
 						bProcesses.add(new BurstProcess());
 					}
 					scheduler = new SJF(bProcesses);
-					scheduler.run();
 				} else {
 					aProcesses.clear();
 					for (int i = 0; i < 10; i++) {
@@ -169,9 +188,8 @@ public class ViewController extends Application {
 						scheduler = new SRT(aProcesses);
 					} else
 						scheduler = new RoundRobin(aProcesses);
-
-					scheduler.run();
 				}
+				scheduler.run();
 			} catch (InvalidTimeException e) {
 				e.printStackTrace();
 			}

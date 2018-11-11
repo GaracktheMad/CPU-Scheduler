@@ -6,10 +6,11 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import model.CalcAverages;
+import model.Scheduler;
 
 /**
  * A borderpane containing all the application's formatted main elements
@@ -43,6 +44,34 @@ public class MainApplicationWindow extends BorderPane {
 	 * The processes contained in the process list
 	 */
 	public ArrayList<ProcessInfoBox> processes;
+	/**
+	 * Contains gantt chart and avs
+	 */
+	private VBox bottomSection;
+	/**
+	 * Contains wait time averages tools
+	 */
+	private HBox averageWait;
+	/**
+	 * Contains TA time average tools
+	 */
+	private HBox averageTA;
+	/**
+	 * Tells the user what TA time box is
+	 */
+	private Label tALbl;
+	/**
+	 * Tells the user what the wait time box is
+	 */
+	private Label wLbl;
+	/**
+	 * Displays the value of the average wait rounded to .00
+	 */
+	private TextField avWaitBox;
+	/**
+	 * Displays the value of average TA rounded to .00
+	 */
+	private TextField avTABox;
 
 	/**
 	 * Creates a main application with 10 max processes and a max quantum value of
@@ -105,40 +134,54 @@ public class MainApplicationWindow extends BorderPane {
 		topLabel = new HBox(10);
 		processes = new ArrayList<ProcessInfoBox>();
 		refreshProcessList(1);
+
+		averageWait = new HBox(5);
+		averageTA = new HBox(5);
+		wLbl = new Label("Average Wait Time:");
+		tALbl = new Label("Average Turn Around Time:");
+		avWaitBox = new TextField();
+		avTABox = new TextField();
+		avWaitBox.setEditable(false);
+		avTABox.setEditable(false);
+		averageWait.getChildren().addAll(wLbl, avWaitBox);
+		averageTA.getChildren().addAll(tALbl, avTABox);
+		chart = new GanttChart();
+
+		bottomSection = new VBox(10);
+		bottomSection.getChildren().addAll(averageWait, averageTA,chart);
+
 		setTop(selections);
 		setCenter(scrolling);
-		setBottom(chart);
+		setBottom(bottomSection);
 	}
 
 	/**
 	 * Resets the contents of process list and fills them with the specified number
 	 * of process boxes.
 	 * 
+	 * @author Peter Vukas and Brandon Ruiz
 	 * @param numberOfProcesses Number of processes to be displayed.
 	 */
 	public void refreshProcessList(int numberOfProcesses) {
 		processList.getChildren().clear();
 		processes.clear();
 		topLabel.getChildren().clear();
-		
-		//Brandon time
-		Label processesLabel = new Label("Processes"),
-				burstLabel = new Label("Burst Time"),
-				arrivalLabel = new Label("Arrival Time"),
-				turnAroundLabel = new Label("Turnaround"),
+
+		// Brandon time
+		Label processesLabel = new Label("Processes"), burstLabel = new Label("Burst Time"),
+				arrivalLabel = new Label("Arrival Time"), turnAroundLabel = new Label("Turnaround"),
 				waitLabel = new Label("Wait");
-		
+
 		processesLabel.setPrefWidth(75);
 		burstLabel.setPrefWidth(75);
 		arrivalLabel.setPrefWidth(75);
 		turnAroundLabel.setPrefWidth(75);
 		waitLabel.setPrefWidth(75);
-		
-		topLabel.getChildren().addAll(processesLabel, burstLabel, 
-				arrivalLabel, turnAroundLabel, waitLabel);
+
+		topLabel.getChildren().addAll(processesLabel, burstLabel, arrivalLabel, turnAroundLabel, waitLabel);
 		topLabel.setSpacing(25);
-		//Brandon time over
-		
+		// Brandon time over
+
 		if (ProcessInfoBox.isPriorityMode == true) {
 			topLabel.getChildren().add(new Label("Priority"));
 		}
@@ -158,11 +201,18 @@ public class MainApplicationWindow extends BorderPane {
 	 *                      is called automatically.
 	 */
 	public void setGanttList(ArrayList<GanttBox> allGanttBoxes) {
+		bottomSection.getChildren().remove(chart);
 		chart = new GanttChart(allGanttBoxes);
+		bottomSection.getChildren().add(chart);
 	}
-	
-	public void setAverages(@SuppressWarnings("rawtypes") CalcAverages ca) {
-		//TODO Create an averages box to display above the gantt chart
+
+	/**
+	 * Displays the averages to the user.
+	 * @param s Scheduling algorithm that was used
+	 */
+	public void setAverages(@SuppressWarnings("rawtypes") Scheduler s) {
+		avWaitBox.setText(String.format("%.2f", s.getAverageWaitTime()));
+		avTABox.setText(String.format("%.2f", s.getAverageTurnAroundTime()));
 	}
 
 	/**

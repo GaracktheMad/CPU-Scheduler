@@ -1,9 +1,8 @@
-package model;
+package view;
 
 import java.util.ArrayList;
 
 import javafx.scene.layout.HBox;
-import view.GanttBox;
 
 /**
  * Gantt chart creation class

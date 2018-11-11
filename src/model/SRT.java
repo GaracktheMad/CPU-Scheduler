@@ -138,6 +138,7 @@ public class SRT extends Scheduler<ArrivalProcess>{
 		
 		gantt.end(time);
 		processes = terminated;
+		averageCalc();
 		
 		return terminated;
 	}

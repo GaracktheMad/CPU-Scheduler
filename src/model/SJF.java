@@ -110,6 +110,7 @@ public class SJF extends Scheduler<BurstProcess>   {
 		}
 		gantt.end(time);
 		processes = terminated;
+		averageCalc();
 		return terminated;
 	}
 
