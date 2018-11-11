@@ -83,6 +83,11 @@ public class SRT extends Scheduler<ArrivalProcess>{
 		double time = 0;
 		
 		while(processes.size() > 0) {
+			//End chance
+			if(terminate) return null;
+			//Show the termination pop-up
+			showAlert();
+			
 			//Any time there's a gap in CPU processing, it will be mapped to the Gantt chart and the time will be updated
 			if(processes.get(0).getArrivalTime() > time) {
 				gantt.addSection("Idle", time);
@@ -123,6 +128,10 @@ public class SRT extends Scheduler<ArrivalProcess>{
 			
 			//Process the current for the remainder of its burst time
 			try {
+				
+				//End chance
+				if(terminate) return null;
+				
 				gantt.addSection(current.getName(), time);
 				current.setWaitTime(time - current.getArrivalTime() - current.getTurnAroundTime());
 				time += current.getBurstTime();
@@ -135,6 +144,10 @@ public class SRT extends Scheduler<ArrivalProcess>{
 			}
 			
 		}
+		
+		//End chance
+		if(terminate) return null;
+		alert.close();
 		
 		gantt.end(time);
 		processes = terminated;

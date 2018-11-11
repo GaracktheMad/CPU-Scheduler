@@ -17,7 +17,7 @@ public class FIFO extends Scheduler<ArrivalProcess> {
 		super();
 		processes = new ArrayList<ArrivalProcess>();
 	}
-	
+
 	public FIFO(ArrayList<ArrivalProcess> processes) {
 		super();
 		this.processes = processes;
@@ -30,6 +30,13 @@ public class FIFO extends Scheduler<ArrivalProcess> {
 	 */
 	@Override
 	public ArrayList<ArrivalProcess> run() {
+		// Reset the termination button
+		terminate = false;
+		// Show the termination pop-up
+		showAlert();
+		// Current time of the CPU
+		double cpuTime = 0;
+
 		double waitTimeProcessor = 0; // Used in wait time calc
 		double turnAroundProcessor = 0; // Used in TA calc
 		try {
@@ -38,7 +45,18 @@ public class FIFO extends Scheduler<ArrivalProcess> {
 			System.out.println("UH-OH! UNEXPECTED ERROR ALERT! FIX IT");
 		}
 		for (ArrivalProcess ap : processes) {// Algorithmic loop
+
+			//End chance
+			if(terminate) return null;
+			
+			if (ap.getArrivalTime() > cpuTime) {
+				gantt.addSection("Idle", cpuTime);
+				cpuTime = ap.getArrivalTime();
+			}
+			
 			try {
+				gantt.addSection(ap.getName(), cpuTime);
+				cpuTime += ap.getBurstTime();
 				ap.setWaitTime(waitTimeProcessor); // Sets the calculated wait time
 				turnAroundProcessor += ap.getBurstTime();// Turnaround = Last turnaround + burst time
 				ap.setTurnAroundTime(turnAroundProcessor); // Sets the calc'd TA
@@ -53,6 +71,13 @@ public class FIFO extends Scheduler<ArrivalProcess> {
 		if (noError == false) {
 			return null; // This should only occur if a wait time or turn around time wasn't added
 		}
+
+		// End chance
+		if (terminate)
+			return null;
+		alert.close();
+
+		gantt.end(cpuTime);
 		return getProcesses(); // Returns a copy of the current array
 	}
 

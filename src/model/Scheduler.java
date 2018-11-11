@@ -2,6 +2,9 @@ package model;
 
 import java.util.ArrayList;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+
 /**
  * * Super class of all CPU Scheduling algorithms with common variables and
  * methods. This is an abstract class and should be used accordingly.
@@ -25,10 +28,21 @@ public abstract class Scheduler<N extends Process> implements CalcAverages<N> {
 	 * of the array list
 	 */
 	protected double averageTurnAroundTime;
+
 	/**
 	 * A gantt chart generated during run()
 	 */
 	protected Gantt gantt;
+
+	/**
+	 * A boolean value for if the user terminates an algorithm
+	 */
+	protected boolean terminate;
+
+	/**
+	 * A popup window to allow the user to end the algorithm
+	 */
+	protected Alert alert;
 
 	/**
 	 * Initializes the process list
@@ -37,6 +51,7 @@ public abstract class Scheduler<N extends Process> implements CalcAverages<N> {
 		averageWaitTime = -1;
 		averageTurnAroundTime = -1;
 		gantt = new Gantt();
+		alert = new Alert(Alert.AlertType.INFORMATION, "Running.  Press \"OK\" to terminate");
 	}
 
 	/**
@@ -79,12 +94,23 @@ public abstract class Scheduler<N extends Process> implements CalcAverages<N> {
 	public void clearProcesses() {
 		processes.clear();
 	}
-	
+
 	/**
 	 * Access the gantt chart
 	 */
 	public Gantt getGantt() {
 		return gantt;
+	}
+
+	/**
+	 * Show the alert and allow the user to stop the "CPU" from running
+	 * 
+	 * @author Brandon Ruiz
+	 */
+	public void showAlert() {
+		alert.show();
+		if (alert.isShowing() && alert.getResult().equals(ButtonType.OK))
+			terminate = true;
 	}
 
 	/**

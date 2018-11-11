@@ -61,6 +61,11 @@ public class Priority extends Scheduler<PrioritizedProcess> {
 
 	@Override
 	public ArrayList<PrioritizedProcess> run() {
+		//Reset the termination button
+		terminate = false;
+		//Show the termination pop-up
+		showAlert();
+		
 		// An array of terminated processes, the returned array
 		ArrayList<PrioritizedProcess> terminated = new ArrayList<PrioritizedProcess>();
 
@@ -83,6 +88,10 @@ public class Priority extends Scheduler<PrioritizedProcess> {
 		double time = 0;
 
 		while (processes.size() > 0) {
+			
+			//End chance
+			if(terminate) return null;
+			
 			// Any time there's a gap in CPU processing, it will be mapped to the Gantt
 			// chart and the time will be updated
 			if (processes.get(0).getArrivalTime() > time) {
@@ -113,6 +122,7 @@ public class Priority extends Scheduler<PrioritizedProcess> {
 							current.setTurnAroundTime(current.getTurnAroundTime() + dt);
 							time += dt;
 							current = processes.get(i);
+							
 						} catch (InvalidTimeException e) {
 							e.printStackTrace();
 						}
@@ -122,6 +132,10 @@ public class Priority extends Scheduler<PrioritizedProcess> {
 
 			// Process the current for the remainder of its burst time
 			try {
+				
+				//End chance
+				if(terminate) return null;
+				
 				gantt.addSection(current.getName(), time);
 				current.setWaitTime(time - current.getArrivalTime() - current.getTurnAroundTime());
 				time += current.getBurstTime();
@@ -136,6 +150,10 @@ public class Priority extends Scheduler<PrioritizedProcess> {
 			}
 
 		}
+		
+		//End chance
+		if(terminate) return null;
+		alert.close();
 		
 		gantt.end(time);
 		processes = terminated;
