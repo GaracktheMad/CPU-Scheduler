@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import model.PrioritizedProcess;
 import model.Scheduler;
 
 /**
@@ -148,7 +149,7 @@ public class MainApplicationWindow extends BorderPane {
 		chart = new GanttChart();
 
 		bottomSection = new VBox(10);
-		bottomSection.getChildren().addAll(averageWait, averageTA,chart);
+		bottomSection.getChildren().addAll(averageWait, averageTA, chart);
 
 		setTop(selections);
 		setCenter(scrolling);
@@ -193,6 +194,80 @@ public class MainApplicationWindow extends BorderPane {
 	}
 
 	/**
+	 * Populates chart with the processes in the array list
+	 * 
+	 * @param alp Array List of prioritized processes to be converted into
+	 *            ProcessInfoBoxes (populated)
+	 */
+	public void setPrioritizedProcessList(ArrayList<PrioritizedProcess> alpp) {
+		processList.getChildren().clear();
+		processes.clear();
+		topLabel.getChildren().clear();
+
+		// Brandon time
+		Label processesLabel = new Label("Processes"), burstLabel = new Label("Burst Time"),
+				arrivalLabel = new Label("Arrival Time"), turnAroundLabel = new Label("Turnaround"),
+				waitLabel = new Label("Wait");
+
+		processesLabel.setPrefWidth(75);
+		burstLabel.setPrefWidth(75);
+		arrivalLabel.setPrefWidth(75);
+		turnAroundLabel.setPrefWidth(75);
+		waitLabel.setPrefWidth(75);
+
+		topLabel.getChildren().addAll(processesLabel, burstLabel, arrivalLabel, turnAroundLabel, waitLabel);
+		topLabel.setSpacing(25);
+		// Brandon time over
+
+		ProcessInfoBox.isPriorityMode = true;
+		topLabel.getChildren().add(new Label("Priority"));
+
+		processList.getChildren().add(topLabel);
+		for (PrioritizedProcess p : alpp) {
+			ProcessInfoBox pib = new ProcessInfoBox(p.getName(), p.getBurstTime(), p.getArrivalTime(), p.getWaitTime(),
+					p.getTurnAroundTime(), p.getPriority(), p.id);
+			processes.add(pib);
+			processList.getChildren().add(pib);
+		}
+	}
+
+	/**
+	 * Populates chart with the processes in the array list
+	 * 
+	 * @param alp Array List of non-prioritized processes to be converted into
+	 *            ProcessInfoBoxes (populated)
+	 */
+	public void setProcessList(ArrayList<model.Process> alp) {
+		processList.getChildren().clear();
+		processes.clear();
+		topLabel.getChildren().clear();
+
+		// Brandon time
+		Label processesLabel = new Label("Processes"), burstLabel = new Label("Burst Time"),
+				arrivalLabel = new Label("Arrival Time"), turnAroundLabel = new Label("Turnaround"),
+				waitLabel = new Label("Wait");
+
+		processesLabel.setPrefWidth(75);
+		burstLabel.setPrefWidth(75);
+		arrivalLabel.setPrefWidth(75);
+		turnAroundLabel.setPrefWidth(75);
+		waitLabel.setPrefWidth(75);
+
+		topLabel.getChildren().addAll(processesLabel, burstLabel, arrivalLabel, turnAroundLabel, waitLabel);
+		topLabel.setSpacing(25);
+		// Brandon time over
+
+		processList.getChildren().add(topLabel);
+
+		for (model.Process p : alp) {
+			ProcessInfoBox pib = new ProcessInfoBox(p.getName(), p.getBurstTime(), p.getArrivalTime(), p.getWaitTime(),
+					p.getTurnAroundTime(), -1, p.id);
+			processes.add(pib);
+			processList.getChildren().add(pib);
+		}
+	}
+
+	/**
 	 * Takes the premade GanttBoxes and makes them into a sorted chart. All objects
 	 * to be displayed in this chart should be in this array list as it cannot be
 	 * appended later.
@@ -208,6 +283,7 @@ public class MainApplicationWindow extends BorderPane {
 
 	/**
 	 * Displays the averages to the user.
+	 * 
 	 * @param s Scheduling algorithm that was used
 	 */
 	public void setAverages(@SuppressWarnings("rawtypes") Scheduler s) {

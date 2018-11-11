@@ -168,8 +168,10 @@ public class ViewController extends Application {
 		 * 
 		 * @see javafx.event.EventHandler#handle(javafx.event.Event)
 		 */
+		@SuppressWarnings("unchecked")
 		@Override
 		public void handle(ActionEvent arg0) {
+			Process.resetProcessNameGen();
 			try {
 				if (currentAlgorithm.equals("P")) {
 					pProcesses.clear();
@@ -177,12 +179,28 @@ public class ViewController extends Application {
 						pProcesses.add(new PrioritizedProcess());
 					}
 					scheduler = new Priority(pProcesses);
+					ArrayList<PrioritizedProcess> alp = scheduler.run();
+					frame.setPrioritizedProcessList(alp);
+					ArrayList<GanttBox> gantts = new ArrayList<GanttBox>();
+					for (Process p : alp) {
+						gantts.add(new GanttBox(p.getName(), p.getTurnAroundTime()));
+					}
+					frame.setAverages(scheduler);
+					frame.setGanttList(gantts);
 				} else if (currentAlgorithm.equals("SJF")) {
 					bProcesses.clear();
 					for (int i = 0; i < frame.selections.getNumberOfProcesses(); i++) {
 						bProcesses.add(new BurstProcess());
 					}
 					scheduler = new SJF(bProcesses);
+					ArrayList<Process> alp = scheduler.run();
+					frame.setProcessList(alp);
+					ArrayList<GanttBox> gantts = new ArrayList<GanttBox>();
+					for (Process p : alp) {
+						gantts.add(new GanttBox(p.getName(), p.getTurnAroundTime()));
+					}
+					frame.setAverages(scheduler);
+					frame.setGanttList(gantts);
 				} else {
 					aProcesses.clear();
 					for (int i = 0; i < frame.selections.getNumberOfProcesses(); i++) {
@@ -190,12 +208,36 @@ public class ViewController extends Application {
 					}
 					if (currentAlgorithm.equals("FIFO")) {
 						scheduler = new FIFO(aProcesses);
+						ArrayList<Process> alp = scheduler.run();
+						frame.setProcessList(alp);
+						ArrayList<GanttBox> gantts = new ArrayList<GanttBox>();
+						for (Process p : alp) {
+							gantts.add(new GanttBox(p.getName(), p.getTurnAroundTime()));
+						}
+						frame.setAverages(scheduler);
+						frame.setGanttList(gantts);
 					} else if (currentAlgorithm.equals("SRTF")) {
 						scheduler = new SRT(aProcesses);
-					} else
+						ArrayList<Process> alp = scheduler.run();
+						frame.setProcessList(alp);
+						ArrayList<GanttBox> gantts = new ArrayList<GanttBox>();
+						for (Process p : alp) {
+							gantts.add(new GanttBox(p.getName(), p.getTurnAroundTime()));
+						}
+						frame.setAverages(scheduler);
+						frame.setGanttList(gantts);
+					} else {
 						scheduler = new RoundRobin(aProcesses);
+						ArrayList<Process> alp = scheduler.run();
+						frame.setProcessList(alp);
+						ArrayList<GanttBox> gantts = new ArrayList<GanttBox>();
+						for (Process p : alp) {
+							gantts.add(new GanttBox(p.getName(), p.getTurnAroundTime()));
+						}
+						frame.setAverages(scheduler);
+						frame.setGanttList(gantts);
+					}
 				}
-				scheduler.run();
 			} catch (InvalidTimeException e) {
 				e.printStackTrace();
 			}

@@ -46,6 +46,23 @@ public class ProcessInfoBox extends HBox {
 	 * Initializes all fields and constructs the container
 	 */
 	public ProcessInfoBox() {
+		setup();
+	}
+
+	protected ProcessInfoBox(String name, double burst, double arrival, double wait, double ta, int priority, int id) {
+		setup();
+		processName.setText(name);
+		burstTime.setText(String.valueOf(burst));
+		if (isPriorityMode == true) {
+			priorityBox.setText(String.valueOf(priority));
+		}
+		arrivalTime.setText(String.valueOf(arrival));
+		waitTime.setText(String.valueOf(wait));
+		turnAroundTime.setText(String.valueOf(ta));
+		associatedID = id;
+	}
+
+	private void setup() {
 		processName = new TextField();
 		burstTime = new TextField();
 		priorityBox = new TextField();
@@ -68,7 +85,6 @@ public class ProcessInfoBox extends HBox {
 		arrivalTime.setPrefWidth(75);
 		setSpacing(25);
 		// Brandon time over
-
 	}
 
 	/**
