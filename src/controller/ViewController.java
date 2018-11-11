@@ -91,8 +91,10 @@ public class ViewController extends Application {
 				ArrayList<ArrivalProcess> processes = new ArrayList<ArrivalProcess>();
 				for (ProcessInfoBox p : frame.processes) {
 					try {// Converts data to processes
-						processes.add(new ArrivalProcess(new Process(p.getProcessName(),
-								Double.valueOf(p.getBurstTime()), Double.valueOf(p.getArrivalTime()))));
+						ArrivalProcess ap = new ArrivalProcess(new Process(p.getProcessName(),
+								Double.valueOf(p.getBurstTime()), Double.valueOf(p.getArrivalTime())));
+						processes.add(ap);
+						p.setAssociatedID(ap.id);
 					} catch (NumberFormatException | InvalidTimeException e) {
 						return;
 					}
@@ -109,9 +111,11 @@ public class ViewController extends Application {
 				ArrayList<PrioritizedProcess> processes = new ArrayList<PrioritizedProcess>();
 				for (ProcessInfoBox p : frame.processes) {
 					try {// Converts data to processes
-						processes.add(
-								new PrioritizedProcess(new Process(p.getProcessName(), Double.valueOf(p.getBurstTime()),
-										Double.valueOf(p.getArrivalTime())), Short.valueOf(p.getPriority())));
+						PrioritizedProcess pp = new PrioritizedProcess(new Process(p.getProcessName(),
+								Double.valueOf(p.getBurstTime()), Double.valueOf(p.getArrivalTime())),
+								Short.valueOf(p.getPriority()));
+						processes.add(pp);
+						p.setAssociatedID(pp.id);
 						scheduler = new Priority(processes);
 					} catch (NumberFormatException | InvalidTimeException e) {
 						return;
@@ -122,8 +126,10 @@ public class ViewController extends Application {
 				ArrayList<BurstProcess> processes = new ArrayList<BurstProcess>();
 				for (ProcessInfoBox p : frame.processes) {
 					try {
-						processes.add(new BurstProcess(new Process(p.getProcessName(), Double.valueOf(p.getBurstTime()),
-								Double.valueOf(p.getArrivalTime()))));
+						BurstProcess bp = new BurstProcess(new Process(p.getProcessName(),
+								Double.valueOf(p.getBurstTime()), Double.valueOf(p.getArrivalTime())));
+						processes.add(bp);
+						p.setAssociatedID(bp.id);
 						scheduler = new SJF(processes);
 					} catch (NumberFormatException | InvalidTimeException e) {
 						return;
@@ -136,7 +142,7 @@ public class ViewController extends Application {
 			ArrayList<Process> pal = scheduler.run();
 			for (ProcessInfoBox pib : frame.processes) {// Converts data to processes
 				for (Process p : pal) {
-					if (p.getName().equals(pib.getProcessName())) {
+					if (p.id == pib.getAssociatedID()) {
 						pib.setWaitTime(p.getWaitTime());
 						pib.setTurnAroundTime(p.getTurnAroundTime());
 					}

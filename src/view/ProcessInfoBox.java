@@ -40,6 +40,7 @@ public class ProcessInfoBox extends HBox {
 	 * A flag used to indicate calculations for priority algorithms are being done.
 	 */
 	public static boolean isPriorityMode = false;
+	private int associatedID;
 
 	/**
 	 * Initializes all fields and constructs the container
@@ -125,6 +126,20 @@ public class ProcessInfoBox extends HBox {
 	 */
 	public String getArrivalTime() {
 		return arrivalTime.getText();
+	}
+
+	/**
+	 * @return the associatedID
+	 */
+	public int getAssociatedID() {
+		return associatedID;
+	}
+
+	/**
+	 * @param associatedID the associated ID to set
+	 */
+	public void setAssociatedID(int associatedID) {
+		this.associatedID = associatedID;
 	}
 
 }
