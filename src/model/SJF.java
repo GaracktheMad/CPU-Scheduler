@@ -112,8 +112,8 @@ public class SJF extends Scheduler<BurstProcess> {
 				// Execute the shortest process that had arrived
 				if (p.getArrivalTime() <= time) {
 					try {
-						p.setWaitTime(time);
-						p.setTurnAroundTime(p.getBurstTime() + time);
+						p.setWaitTime(time - p.getArrivalTime());
+						p.setTurnAroundTime(p.getBurstTime() + p.getWaitTime());
 						// System.out.println(p.getWaitTime() + " : " + p.getTurnAroundTime());
 						gantt.addSection(p.getName(), time);
 						time += p.getBurstTime();
@@ -135,6 +135,7 @@ public class SJF extends Scheduler<BurstProcess> {
 
 		gantt.end(time);
 		processes = terminated;
+		averageCalc();
 		return terminated;
 	}
 

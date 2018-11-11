@@ -40,34 +40,51 @@ public class ProcessInfoBox extends HBox {
 	 * A flag used to indicate calculations for priority algorithms are being done.
 	 */
 	public static boolean isPriorityMode = false;
+	private int associatedID;
 
 	/**
 	 * Initializes all fields and constructs the container
 	 */
 	public ProcessInfoBox() {
+		setup();
+	}
+
+	protected ProcessInfoBox(String name, double burst, double arrival, double wait, double ta, int priority, int id) {
+		setup();
+		processName.setText(name);
+		burstTime.setText(String.valueOf(burst));
+		if (isPriorityMode == true) {
+			priorityBox.setText(String.valueOf(priority));
+		}
+		arrivalTime.setText(String.valueOf(arrival));
+		waitTime.setText(String.valueOf(wait));
+		turnAroundTime.setText(String.valueOf(ta));
+		associatedID = id;
+	}
+
+	private void setup() {
 		processName = new TextField();
 		burstTime = new TextField();
 		priorityBox = new TextField();
 		arrivalTime = new TextField();
-		
+
 		if (isPriorityMode == false) {
 			priorityBox.setVisible(false);
 		}
 		waitTime = new Label("Not Calculated"); // States the obvious
 		turnAroundTime = new Label("Not Calculated"); // States the obvious
-		getChildren().addAll(processName, burstTime, arrivalTime, waitTime, turnAroundTime);
+		getChildren().addAll(processName, burstTime, arrivalTime, turnAroundTime, waitTime);
 		if (isPriorityMode == true) { // Checks the priority mode flag
 			getChildren().add(priorityBox);
 		}
-		
-		//Brandon time
+
+		// Brandon time
 		processName.setPrefWidth(75);
 		burstTime.setPrefWidth(75);
 		priorityBox.setPrefWidth(75);
 		arrivalTime.setPrefWidth(75);
 		setSpacing(25);
-		//Brandon time over
-		
+		// Brandon time over
 	}
 
 	/**
@@ -95,8 +112,8 @@ public class ProcessInfoBox extends HBox {
 	/**
 	 * @param waitTime The wait time of this process to be displayed to the user
 	 */
-	public void setWaitTime(double waitTime) {
-		turnAroundTime.setText(String.format("%.2f", waitTime));
+	public void setWaitTime(double wTime) {
+		waitTime.setText(String.format("%.2f", wTime));
 	}
 
 	/**
@@ -125,6 +142,20 @@ public class ProcessInfoBox extends HBox {
 	 */
 	public String getArrivalTime() {
 		return arrivalTime.getText();
+	}
+
+	/**
+	 * @return the associatedID
+	 */
+	public int getAssociatedID() {
+		return associatedID;
+	}
+
+	/**
+	 * @param associatedID the associated ID to set
+	 */
+	public void setAssociatedID(int associatedID) {
+		this.associatedID = associatedID;
 	}
 
 }

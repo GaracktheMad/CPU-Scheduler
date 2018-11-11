@@ -157,6 +157,7 @@ public class Priority extends Scheduler<PrioritizedProcess> {
 		
 		gantt.end(time);
 		processes = terminated;
+		averageCalc();
 
 		return terminated;
 	}

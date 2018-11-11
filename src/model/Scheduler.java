@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import view.Gantt;
 
 /**
  * * Super class of all CPU Scheduling algorithms with common variables and
@@ -108,9 +109,9 @@ public abstract class Scheduler<N extends Process> implements CalcAverages<N> {
 	 * @author Brandon Ruiz
 	 */
 	public void showAlert() {
-		alert.show();
-		if (alert.isShowing() && alert.getResult().equals(ButtonType.OK))
-			terminate = true;
+//		alert.show();
+//		if (alert.isShowing() && alert.getResult().equals(ButtonType.OK))
+//			terminate = true;
 	}
 
 	/**
