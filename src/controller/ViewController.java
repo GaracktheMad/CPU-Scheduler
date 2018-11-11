@@ -158,7 +158,7 @@ public class ViewController extends Application {
 	}
 
 	/**
-	 * @author Brandon Ruiz
+	 * @author Brandon Ruiz and Peter Vukas
 	 *
 	 */
 	public class HandleRandom implements EventHandler<ActionEvent> {
@@ -173,19 +173,19 @@ public class ViewController extends Application {
 			try {
 				if (currentAlgorithm.equals("P")) {
 					pProcesses.clear();
-					for (int i = 0; i < 10; i++) {
+					for (int i = 0; i < frame.selections.getNumberOfProcesses(); i++) {
 						pProcesses.add(new PrioritizedProcess());
 					}
 					scheduler = new Priority(pProcesses);
 				} else if (currentAlgorithm.equals("SJF")) {
 					bProcesses.clear();
-					for (int i = 0; i < 10; i++) {
+					for (int i = 0; i < frame.selections.getNumberOfProcesses(); i++) {
 						bProcesses.add(new BurstProcess());
 					}
 					scheduler = new SJF(bProcesses);
 				} else {
 					aProcesses.clear();
-					for (int i = 0; i < 10; i++) {
+					for (int i = 0; i < frame.selections.getNumberOfProcesses(); i++) {
 						aProcesses.add(new ArrivalProcess());
 					}
 					if (currentAlgorithm.equals("FIFO")) {

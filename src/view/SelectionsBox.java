@@ -74,8 +74,7 @@ public class SelectionsBox extends VBox {
 			EventHandler<ActionEvent> randomize, EventHandler<ActionEvent> algorithmSelection,
 			EventHandler<ActionEvent> processNumSelection) {
 		algorithmBox = new ComboBox<String>();
-		algorithmBox.getItems().addAll("First in First Out", "Shortest Job First",
-				// "Priority",
+		algorithmBox.getItems().addAll("First in First Out", "Shortest Job First", "Priority",
 				// "Round Robin",
 				"Shortest Remaining Time First");
 		algorithmBox.setEditable(false); // Ensures the user can only select expected values.
@@ -112,7 +111,7 @@ public class SelectionsBox extends VBox {
 		rows[2].setSpacing(118);
 		rows[3].setSpacing(35);
 		// Brandon time over
-		
+
 		toggleQuantum();
 	}
 
@@ -123,7 +122,7 @@ public class SelectionsBox extends VBox {
 	public void toggleQuantum() {
 		rows[2].setDisable(!rows[3].isDisable());
 	}
-	
+
 	/**
 	 * @return True if it IS disabled
 	 */
