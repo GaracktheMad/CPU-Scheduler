@@ -169,7 +169,6 @@ public class ViewController extends Application {
 						scheduler = new SRT(aProcesses);
 					} else
 						scheduler = new RoundRobin(aProcesses);
-
 					scheduler.run();
 				}
 			} catch (InvalidTimeException e) {
