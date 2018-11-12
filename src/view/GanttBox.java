@@ -8,7 +8,10 @@ import java.util.Comparator;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 
 /**
  * A box which is used in constructing a Gantt chart
@@ -20,7 +23,7 @@ public class GanttBox extends BorderPane implements Comparator<GanttBox> {
 	/**
 	 * The process name in this box
 	 */
-	private Label processName;
+	private Text processName;
 	/**
 	 * The time at which this process ends
 	 */
@@ -44,17 +47,19 @@ public class GanttBox extends BorderPane implements Comparator<GanttBox> {
 	 *            The time at which this process ends
 	 */
 	public GanttBox(String processN, double endTime, double startTime) {
+		StackPane centerContainer = new StackPane();
 		sortResource = endTime;
-		processName = new Label(processN);
-		processName.setAlignment(Pos.TOP_CENTER);
+		processName = new Text(processN);
 		time = new Label(String.valueOf(endTime));
-		time.setAlignment(Pos.BOTTOM_RIGHT);
 		ganttBox = new Rectangle();
-		ganttBox.setWidth((endTime - startTime - 1) * 2);
-		ganttBox.setHeight(10);
-		setTop(processName);
-		setCenter(ganttBox);
+		ganttBox.setWidth((endTime - startTime) * 10);
+		ganttBox.setHeight(50);
+		ganttBox.setFill(null);
+		ganttBox.setStroke(Color.CHOCOLATE);
+		centerContainer.getChildren().addAll(ganttBox, processName);
+		setCenter(centerContainer);
 		setBottom(time);
+		setAlignment(time, Pos.BOTTOM_RIGHT);
 	}
 
 	/*

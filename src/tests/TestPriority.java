@@ -15,7 +15,7 @@ public class TestPriority {
 		
 		ArrayList<PrioritizedProcess> processes = ps.getProcesses();
 		
-		ps.getGantt().display();
+		ps.gantt.display();
 		
 		System.out.println(ps.averageWait(processes));
 		System.out.println(ps.averageTurnAround(processes));

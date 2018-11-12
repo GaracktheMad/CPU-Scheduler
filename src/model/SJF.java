@@ -76,11 +76,6 @@ public class SJF extends Scheduler<BurstProcess> {
 	 */
 	@Override
 	public ArrayList<BurstProcess> run() {
-		// Reset the termination button
-		terminate = false;
-		// Show the termination pop-up
-		showAlert();
-
 		// An array of terminated processes, the returned array
 		ArrayList<BurstProcess> terminated = new ArrayList<BurstProcess>();
 
@@ -93,6 +88,13 @@ public class SJF extends Scheduler<BurstProcess> {
 		double time = 0; // Current time of the CPU
 		boolean idle = true; // Boolean for when the CPU time is shorter than all remaining arrival times
 
+		for(BurstProcess bp: processes) {
+			if (bp.getArrivalTime() == 0) {
+				idle = false;
+				break;
+			}
+		}
+		
 		while (processes.size() != 0) {
 
 			// If the CPU was idle, move forward the time so that a process is available

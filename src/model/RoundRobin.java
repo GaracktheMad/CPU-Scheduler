@@ -41,8 +41,13 @@ public class RoundRobin extends Scheduler<ArrivalProcess> {
 
 	@Override
 	public void populateProcessList(int size) {
-		// TODO Auto-generated method stub
-
+		for (int i = 0; i < size; i++) {
+			try {
+				processes.add(new ArrivalProcess());
+			} catch (InvalidTimeException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@Override
@@ -101,7 +106,7 @@ public class RoundRobin extends Scheduler<ArrivalProcess> {
 				}
 			}
 		}
-
+		averageCalc();
 		gantt.end(time);
 		processes = terminated;
 		return terminated;

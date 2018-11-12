@@ -32,7 +32,7 @@ public class MainApplicationWindow extends BorderPane {
 	/**
 	 * Gantt Chart HBox which will be filled after calculations
 	 */
-	private HBox chart;
+	private ScrollPane chart;
 	/**
 	 * The selections menu
 	 */
@@ -146,7 +146,7 @@ public class MainApplicationWindow extends BorderPane {
 		avTABox.setEditable(false);
 		averageWait.getChildren().addAll(wLbl, avWaitBox);
 		averageTA.getChildren().addAll(tALbl, avTABox);
-		chart = new GanttChart();
+		chart = new ScrollPane();
 
 		bottomSection = new VBox(10);
 		bottomSection.getChildren().addAll(averageWait, averageTA, chart);
@@ -173,11 +173,11 @@ public class MainApplicationWindow extends BorderPane {
 				arrivalLabel = new Label("Arrival Time"), turnAroundLabel = new Label("Turnaround"),
 				waitLabel = new Label("Wait");
 
-		processesLabel.setPrefWidth(75);
-		burstLabel.setPrefWidth(75);
-		arrivalLabel.setPrefWidth(75);
-		turnAroundLabel.setPrefWidth(75);
-		waitLabel.setPrefWidth(75);
+		processesLabel.setPrefWidth(100);
+		burstLabel.setPrefWidth(100);
+		arrivalLabel.setPrefWidth(100);
+		turnAroundLabel.setPrefWidth(100);
+		waitLabel.setPrefWidth(100);
 
 		topLabel.getChildren().addAll(processesLabel, burstLabel, arrivalLabel, turnAroundLabel, waitLabel);
 		topLabel.setSpacing(25);
@@ -210,11 +210,11 @@ public class MainApplicationWindow extends BorderPane {
 				arrivalLabel = new Label("Arrival Time"), turnAroundLabel = new Label("Turnaround"),
 				waitLabel = new Label("Wait");
 
-		processesLabel.setPrefWidth(75);
-		burstLabel.setPrefWidth(75);
-		arrivalLabel.setPrefWidth(75);
-		turnAroundLabel.setPrefWidth(75);
-		waitLabel.setPrefWidth(75);
+		processesLabel.setPrefWidth(100);
+		burstLabel.setPrefWidth(100);
+		arrivalLabel.setPrefWidth(100);
+		turnAroundLabel.setPrefWidth(100);
+		waitLabel.setPrefWidth(100);
 
 		topLabel.getChildren().addAll(processesLabel, burstLabel, arrivalLabel, turnAroundLabel, waitLabel);
 		topLabel.setSpacing(25);
@@ -254,11 +254,11 @@ public class MainApplicationWindow extends BorderPane {
 				arrivalLabel = new Label("Arrival Time"), turnAroundLabel = new Label("Turnaround"),
 				waitLabel = new Label("Wait");
 
-		processesLabel.setPrefWidth(75);
-		burstLabel.setPrefWidth(75);
-		arrivalLabel.setPrefWidth(75);
-		turnAroundLabel.setPrefWidth(75);
-		waitLabel.setPrefWidth(75);
+		processesLabel.setPrefWidth(100);
+		burstLabel.setPrefWidth(100);
+		arrivalLabel.setPrefWidth(100);
+		turnAroundLabel.setPrefWidth(100);
+		waitLabel.setPrefWidth(100);
 
 		topLabel.getChildren().addAll(processesLabel, burstLabel, arrivalLabel, turnAroundLabel, waitLabel);
 		topLabel.setSpacing(25);
@@ -288,10 +288,10 @@ public class MainApplicationWindow extends BorderPane {
 	 * @param allGanttBoxes An array list of all gantt boxes to be displayed. .sort
 	 *                      is called automatically.
 	 */
-	public void setGanttList(HBox hb) {
+	public void setGanttList(Gantt gantt) {
 		bottomSection.getChildren().remove(chart);
-		chart = hb;
-		bottomSection.getChildren().add(hb);
+		chart = gantt;
+		bottomSection.getChildren().add(gantt);
 	}
 
 	/**

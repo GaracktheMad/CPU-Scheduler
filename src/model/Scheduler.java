@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import view.Gantt;
 
 /**
@@ -10,8 +11,7 @@ import view.Gantt;
  * methods. This is an abstract class and should be used accordingly.
  * 
  * @author Peter Vukas
- * @param <N>
- *            A subclass of process which is used by this algorithm
+ * @param <N> A subclass of process which is used by this algorithm
  */
 public abstract class Scheduler<N extends Process> implements CalcAverages<N> {
 	/**
@@ -32,7 +32,7 @@ public abstract class Scheduler<N extends Process> implements CalcAverages<N> {
 	/**
 	 * A gantt chart generated during run()
 	 */
-	protected Gantt gantt;
+	public final Gantt gantt;
 
 	/**
 	 * A boolean value for if the user terminates an algorithm
@@ -96,21 +96,16 @@ public abstract class Scheduler<N extends Process> implements CalcAverages<N> {
 	}
 
 	/**
-	 * Access the gantt chart
-	 */
-	public Gantt getGantt() {
-		return gantt;
-	}
-
-	/**
 	 * Show the alert and allow the user to stop the "CPU" from running
 	 * 
 	 * @author Brandon Ruiz
 	 */
+	@Deprecated
 	public void showAlert() {
-//		alert.show();
-//		if (alert.isShowing() && alert.getResult().equals(ButtonType.OK))
-//			terminate = true;
+		alert.show();
+		if (alert.isShowing() && alert.getResult().equals(ButtonType.OK)) {
+			terminate = true;
+		}
 	}
 
 	/**
@@ -120,14 +115,12 @@ public abstract class Scheduler<N extends Process> implements CalcAverages<N> {
 	public abstract ArrayList<N> getProcesses();
 
 	/**
-	 * @param p
-	 *            A Process to be added to the list of processes to run
+	 * @param p A Process to be added to the list of processes to run
 	 */
 	public abstract void addProcess(N p);
 
 	/**
-	 * @param p
-	 *            The process to be removed from the list of processes to run
+	 * @param p The process to be removed from the list of processes to run
 	 * @return True if the process was found and removed.
 	 */
 	public abstract boolean removeProcess(N p);
@@ -135,9 +128,8 @@ public abstract class Scheduler<N extends Process> implements CalcAverages<N> {
 	/**
 	 * Populates the process list with auto generated processes.
 	 * 
-	 * @param size
-	 *            An integer > 0 representing the amount of generated processes
-	 *            desired. If this value is <= 0, it will be replaced with 10.
+	 * @param size An integer > 0 representing the amount of generated processes
+	 *             desired. If this value is <= 0, it will be replaced with 10.
 	 */
 	public abstract void populateProcessList(int size);
 

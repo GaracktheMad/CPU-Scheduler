@@ -61,11 +61,6 @@ public class Priority extends Scheduler<PrioritizedProcess> {
 
 	@Override
 	public ArrayList<PrioritizedProcess> run() {
-		//Reset the termination button
-		terminate = false;
-		//Show the termination pop-up
-		showAlert();
-		
 		// An array of terminated processes, the returned array
 		ArrayList<PrioritizedProcess> terminated = new ArrayList<PrioritizedProcess>();
 

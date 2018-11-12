@@ -92,10 +92,10 @@ public class ProcessInfoBox extends HBox {
 		}
 
 		// Brandon time
-		processName.setPrefWidth(75);
-		burstTime.setPrefWidth(75);
-		priorityBox.setPrefWidth(75);
-		arrivalTime.setPrefWidth(75);
+		processName.setPrefWidth(100);
+		burstTime.setPrefWidth(100);
+		priorityBox.setPrefWidth(100);
+		arrivalTime.setPrefWidth(100);
 		setSpacing(25);
 		// Brandon time over
 	}
@@ -119,14 +119,14 @@ public class ProcessInfoBox extends HBox {
 	 *               user
 	 */
 	public void setTurnAroundTime(double taTime) {
-		turnAroundTime.setText(String.format("%.2f", taTime));
+		turnAroundTime.setText(String.format("%10.2f", taTime));
 	}
 
 	/**
 	 * @param waitTime The wait time of this process to be displayed to the user
 	 */
 	public void setWaitTime(double wTime) {
-		waitTime.setText(String.format("%.2f", wTime));
+		waitTime.setText(String.format("%14.2f", wTime));
 	}
 
 	/**

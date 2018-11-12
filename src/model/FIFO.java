@@ -30,10 +30,6 @@ public class FIFO extends Scheduler<ArrivalProcess> {
 	 */
 	@Override
 	public ArrayList<ArrivalProcess> run() {
-		// Reset the termination button
-		terminate = false;
-		// Show the termination pop-up
-		showAlert();
 		// Current time of the CPU
 		double cpuTime = 0;
 

@@ -12,7 +12,7 @@ public class TestSJF {
 		//ArrayList<BurstProcess> processes = sjf.getProcesses();
 		
 		System.out.println();
-		sjf.getGantt().display();
+		sjf.gantt.display();
 	}
 
 }

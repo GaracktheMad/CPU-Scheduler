@@ -17,7 +17,6 @@ import model.FIFO;
 import model.InvalidTimeException;
 import model.PrioritizedProcess;
 import model.Priority;
-import view.GanttBox;
 import view.MainApplicationWindow;
 import view.ProcessInfoBox;
 
@@ -28,12 +27,12 @@ import view.ProcessInfoBox;
 public class ViewController extends Application {
 
 	/**
-	 * 
+	 * The frame in which all processes take place
 	 */
 	MainApplicationWindow frame;
 
 	/**
-	 * 
+	 * Tracks all processes involved
 	 */
 
 	ArrayList<Process> processes;
@@ -42,16 +41,22 @@ public class ViewController extends Application {
 	 * 
 	 */
 	ArrayList<PrioritizedProcess> pProcesses;
+	/**
+	 * 
+	 */
 	ArrayList<BurstProcess> bProcesses;
+	/**
+	 * 
+	 */
 	ArrayList<ArrivalProcess> aProcesses;
 
 	/**
-	 * 
+	 * Algorithm currently being used
 	 */
 	String currentAlgorithm;
 
 	/**
-	 * 
+	 * Scheduling algorithm class
 	 */
 	@SuppressWarnings("rawtypes")
 	Scheduler scheduler;
@@ -66,15 +71,17 @@ public class ViewController extends Application {
 		bProcesses = new ArrayList<BurstProcess>();
 		aProcesses = new ArrayList<ArrivalProcess>();
 		Scene scene = new Scene(frame, 485, 400);
-		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		primaryStage.setScene(scene);
 		primaryStage.show();
 
 	}
 
 	/**
+	 * Logic to link all the data entered in fields to the calculation algorithms
+	 * whenever the calculate button is clicked
+	 * 
 	 * @author Peter Vukas
-	 *
+	 * 
 	 */
 	public class HandleStart implements EventHandler<ActionEvent> {
 
@@ -148,18 +155,17 @@ public class ViewController extends Application {
 					}
 				}
 			}
-//			ArrayList<GanttBox> gantts = new ArrayList<GanttBox>();
-//			for (Process p : pal) {
-//				gantts.add(new GanttBox(p.getName(), p.getTurnAroundTime()));
-//			}
 			frame.setAverages(scheduler);
-			frame.setGanttList(scheduler.getGantt().createChart());
+			scheduler.gantt.refresh();
+			frame.setGanttList(scheduler.gantt);
 		}
 	}
 
 	/**
+	 * Handles the randomization of data, displays it, and calculates it.
+	 * 
 	 * @author Brandon Ruiz and Peter Vukas
-	 *
+	 * 
 	 */
 	public class HandleRandom implements EventHandler<ActionEvent> {
 
@@ -181,12 +187,9 @@ public class ViewController extends Application {
 					scheduler = new Priority(pProcesses);
 					ArrayList<PrioritizedProcess> alp = scheduler.run();
 					frame.setPrioritizedProcessList(alp);
-//					ArrayList<GanttBox> gantts = new ArrayList<GanttBox>();
-//					for (Process p : alp) {
-//						gantts.add(new GanttBox(p.getName(), p.getTurnAroundTime()));
-//					}
 					frame.setAverages(scheduler);
-					frame.setGanttList(scheduler.getGantt().createChart());
+					scheduler.gantt.refresh();
+					frame.setGanttList(scheduler.gantt);
 				} else if (currentAlgorithm.equals("SJF")) {
 					bProcesses.clear();
 					for (int i = 0; i < frame.selections.getNumberOfProcesses(); i++) {
@@ -195,12 +198,9 @@ public class ViewController extends Application {
 					scheduler = new SJF(bProcesses);
 					ArrayList<Process> alp = scheduler.run();
 					frame.setProcessList(alp);
-//					ArrayList<GanttBox> gantts = new ArrayList<GanttBox>();
-//					for (Process p : alp) {
-//						gantts.add(new GanttBox(p.getName(), p.getTurnAroundTime()));
-//					}
 					frame.setAverages(scheduler);
-					frame.setGanttList(scheduler.getGantt().createChart());
+					scheduler.gantt.refresh();
+					frame.setGanttList(scheduler.gantt);
 				} else {
 					aProcesses.clear();
 					for (int i = 0; i < frame.selections.getNumberOfProcesses(); i++) {
@@ -210,33 +210,24 @@ public class ViewController extends Application {
 						scheduler = new FIFO(aProcesses);
 						ArrayList<Process> alp = scheduler.run();
 						frame.setProcessList(alp);
-//						ArrayList<GanttBox> gantts = new ArrayList<GanttBox>();
-//						for (Process p : alp) {
-//							gantts.add(new GanttBox(p.getName(), p.getTurnAroundTime()));
-//						}
 						frame.setAverages(scheduler);
-						frame.setGanttList(scheduler.getGantt().createChart());
+						scheduler.gantt.refresh();
+						frame.setGanttList(scheduler.gantt);
 					} else if (currentAlgorithm.equals("SRTF")) {
 						scheduler = new SRT(aProcesses);
 						ArrayList<Process> alp = scheduler.run();
 						frame.setProcessList(alp);
-//						ArrayList<GanttBox> gantts = new ArrayList<GanttBox>();
-//						for (Process p : alp) {
-//							gantts.add(new GanttBox(p.getName(), p.getTurnAroundTime()));
-//						}
 						frame.setAverages(scheduler);
-						frame.setGanttList(scheduler.getGantt().createChart());
+						scheduler.gantt.refresh();
+						frame.setGanttList(scheduler.gantt);
 					} else {
 						scheduler = new RoundRobin(aProcesses);
-					scheduler.run();
+						scheduler.run();
 						ArrayList<Process> alp = scheduler.run();
 						frame.setProcessList(alp);
-//						ArrayList<GanttBox> gantts = new ArrayList<GanttBox>();
-//						for (Process p : alp) {
-//							gantts.add(new GanttBox(p.getName(), p.getTurnAroundTime()));
-//						}
 						frame.setAverages(scheduler);
-						frame.setGanttList(scheduler.getGantt().createChart());
+						scheduler.gantt.refresh();
+						frame.setGanttList(scheduler.gantt);
 					}
 				}
 			} catch (InvalidTimeException e) {
@@ -247,8 +238,10 @@ public class ViewController extends Application {
 	}
 
 	/**
+	 * Handles the changing of algorithm modes.
+	 * 
 	 * @author Peter Vukas
-	 *
+	 * 
 	 */
 	public class HandleAlgorithm implements EventHandler<ActionEvent> {
 
@@ -270,6 +263,8 @@ public class ViewController extends Application {
 	}
 
 	/**
+	 * Handles a new number of processes being selected
+	 * 
 	 * @author Peter Vukas
 	 *
 	 */
