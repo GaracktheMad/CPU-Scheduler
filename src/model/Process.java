@@ -47,7 +47,13 @@ public class Process {
 	 * Indicates this process has already run and is no longer needed
 	 */
 	private boolean isFinished;
+	/**
+	 * The unique identifier of an instance of a process. Cannot be changed.
+	 */
 	public final int id;
+	/**
+	 * Seed to create a new ID
+	 */
 	private static int idGen = 0;
 
 	/**

@@ -49,6 +49,18 @@ public class ProcessInfoBox extends HBox {
 		setup();
 	}
 
+	/**
+	 * Creates a process infobox with prefilled fields
+	 * 
+	 * @param name     Name of the process to display to the user
+	 * @param burst    Burst time of the process to display
+	 * @param arrival  Arrival time to display
+	 * @param wait     Calculated wait time to display. SHOULD CALCULATE FIRST
+	 * @param ta       Calculated turn around time to display. SHOULD CALCULATE
+	 *                 FIRST
+	 * @param priority Priority of this process, if applicable.
+	 * @param id       Process.id
+	 */
 	protected ProcessInfoBox(String name, double burst, double arrival, double wait, double ta, int priority, int id) {
 		setup();
 		processName.setText(name);
@@ -61,7 +73,19 @@ public class ProcessInfoBox extends HBox {
 		turnAroundTime.setText(String.valueOf(ta));
 		associatedID = id;
 	}
-	
+
+	/**
+	 * Creates a process infobox with prefilled fields
+	 * 
+	 * @param name     Name of the process to display to the user
+	 * @param burst    Burst time of the process to display
+	 * @param arrival  Arrival time to display
+	 * @param wait     Calculated wait time to display. SHOULD CALCULATE FIRST
+	 * @param ta       Calculated turn around time to display. SHOULD CALCULATE
+	 *                 FIRST
+	 * @param priority Priority of this process, if applicable.
+	 * @param id       Process.id
+	 */
 	protected ProcessInfoBox(String name, double burst, double arrival, String wait, String ta, int priority, int id) {
 		setup();
 		processName.setText(name);
@@ -75,6 +99,9 @@ public class ProcessInfoBox extends HBox {
 		associatedID = id;
 	}
 
+	/**
+	 * Common portions between all constructors.
+	 */
 	private void setup() {
 		processName = new TextField();
 		burstTime = new TextField();

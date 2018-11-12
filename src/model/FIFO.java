@@ -18,6 +18,11 @@ public class FIFO extends Scheduler<ArrivalProcess> {
 		processes = new ArrayList<ArrivalProcess>();
 	}
 
+	/**
+	 * Allows creation of a FIFO with a predefined process list
+	 * 
+	 * @param processes Array List of Arrival Processes to be used in calculations
+	 */
 	public FIFO(ArrayList<ArrivalProcess> processes) {
 		super();
 		this.processes = processes;
@@ -42,14 +47,15 @@ public class FIFO extends Scheduler<ArrivalProcess> {
 		}
 		for (ArrivalProcess ap : processes) {// Algorithmic loop
 
-			//End chance
-			if(terminate) return null;
-			
+			// End chance
+			if (terminate)
+				return null;
+
 			if (ap.getArrivalTime() > cpuTime) {
 				gantt.addSection("Idle", cpuTime);
 				cpuTime = ap.getArrivalTime();
 			}
-			
+
 			try {
 				gantt.addSection(ap.getName(), cpuTime);
 				cpuTime += ap.getBurstTime();
