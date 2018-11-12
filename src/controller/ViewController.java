@@ -148,12 +148,12 @@ public class ViewController extends Application {
 					}
 				}
 			}
-			ArrayList<GanttBox> gantts = new ArrayList<GanttBox>();
-			for (Process p : pal) {
-				gantts.add(new GanttBox(p.getName(), p.getTurnAroundTime()));
-			}
+//			ArrayList<GanttBox> gantts = new ArrayList<GanttBox>();
+//			for (Process p : pal) {
+//				gantts.add(new GanttBox(p.getName(), p.getTurnAroundTime()));
+//			}
 			frame.setAverages(scheduler);
-			frame.setGanttList(gantts);
+			frame.setGanttList(scheduler.getGantt().createChart());
 		}
 	}
 
@@ -181,12 +181,12 @@ public class ViewController extends Application {
 					scheduler = new Priority(pProcesses);
 					ArrayList<PrioritizedProcess> alp = scheduler.run();
 					frame.setPrioritizedProcessList(alp);
-					ArrayList<GanttBox> gantts = new ArrayList<GanttBox>();
-					for (Process p : alp) {
-						gantts.add(new GanttBox(p.getName(), p.getTurnAroundTime()));
-					}
+//					ArrayList<GanttBox> gantts = new ArrayList<GanttBox>();
+//					for (Process p : alp) {
+//						gantts.add(new GanttBox(p.getName(), p.getTurnAroundTime()));
+//					}
 					frame.setAverages(scheduler);
-					frame.setGanttList(gantts);
+					frame.setGanttList(scheduler.getGantt().createChart());
 				} else if (currentAlgorithm.equals("SJF")) {
 					bProcesses.clear();
 					for (int i = 0; i < frame.selections.getNumberOfProcesses(); i++) {
@@ -195,12 +195,12 @@ public class ViewController extends Application {
 					scheduler = new SJF(bProcesses);
 					ArrayList<Process> alp = scheduler.run();
 					frame.setProcessList(alp);
-					ArrayList<GanttBox> gantts = new ArrayList<GanttBox>();
-					for (Process p : alp) {
-						gantts.add(new GanttBox(p.getName(), p.getTurnAroundTime()));
-					}
+//					ArrayList<GanttBox> gantts = new ArrayList<GanttBox>();
+//					for (Process p : alp) {
+//						gantts.add(new GanttBox(p.getName(), p.getTurnAroundTime()));
+//					}
 					frame.setAverages(scheduler);
-					frame.setGanttList(gantts);
+					frame.setGanttList(scheduler.getGantt().createChart());
 				} else {
 					aProcesses.clear();
 					for (int i = 0; i < frame.selections.getNumberOfProcesses(); i++) {
@@ -210,33 +210,33 @@ public class ViewController extends Application {
 						scheduler = new FIFO(aProcesses);
 						ArrayList<Process> alp = scheduler.run();
 						frame.setProcessList(alp);
-						ArrayList<GanttBox> gantts = new ArrayList<GanttBox>();
-						for (Process p : alp) {
-							gantts.add(new GanttBox(p.getName(), p.getTurnAroundTime()));
-						}
+//						ArrayList<GanttBox> gantts = new ArrayList<GanttBox>();
+//						for (Process p : alp) {
+//							gantts.add(new GanttBox(p.getName(), p.getTurnAroundTime()));
+//						}
 						frame.setAverages(scheduler);
-						frame.setGanttList(gantts);
+						frame.setGanttList(scheduler.getGantt().createChart());
 					} else if (currentAlgorithm.equals("SRTF")) {
 						scheduler = new SRT(aProcesses);
 						ArrayList<Process> alp = scheduler.run();
 						frame.setProcessList(alp);
-						ArrayList<GanttBox> gantts = new ArrayList<GanttBox>();
-						for (Process p : alp) {
-							gantts.add(new GanttBox(p.getName(), p.getTurnAroundTime()));
-						}
+//						ArrayList<GanttBox> gantts = new ArrayList<GanttBox>();
+//						for (Process p : alp) {
+//							gantts.add(new GanttBox(p.getName(), p.getTurnAroundTime()));
+//						}
 						frame.setAverages(scheduler);
-						frame.setGanttList(gantts);
+						frame.setGanttList(scheduler.getGantt().createChart());
 					} else {
 						scheduler = new RoundRobin(aProcesses);
 					scheduler.run();
 						ArrayList<Process> alp = scheduler.run();
 						frame.setProcessList(alp);
-						ArrayList<GanttBox> gantts = new ArrayList<GanttBox>();
-						for (Process p : alp) {
-							gantts.add(new GanttBox(p.getName(), p.getTurnAroundTime()));
-						}
+//						ArrayList<GanttBox> gantts = new ArrayList<GanttBox>();
+//						for (Process p : alp) {
+//							gantts.add(new GanttBox(p.getName(), p.getTurnAroundTime()));
+//						}
 						frame.setAverages(scheduler);
-						frame.setGanttList(gantts);
+						frame.setGanttList(scheduler.getGantt().createChart());
 					}
 				}
 			} catch (InvalidTimeException e) {

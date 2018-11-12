@@ -61,6 +61,19 @@ public class ProcessInfoBox extends HBox {
 		turnAroundTime.setText(String.valueOf(ta));
 		associatedID = id;
 	}
+	
+	protected ProcessInfoBox(String name, double burst, double arrival, String wait, String ta, int priority, int id) {
+		setup();
+		processName.setText(name);
+		burstTime.setText(String.valueOf(burst));
+		if (isPriorityMode == true) {
+			priorityBox.setText(String.valueOf(priority));
+		}
+		arrivalTime.setText(String.valueOf(arrival));
+		waitTime.setText(wait);
+		turnAroundTime.setText(ta);
+		associatedID = id;
+	}
 
 	private void setup() {
 		processName = new TextField();

@@ -82,7 +82,7 @@ public class Gantt {
 	public HBox createChart() {
 		HBox hb = new HBox();
 		for(GanttSection g: chart) {
-			GanttBox gb = new GanttBox(g.getName(),g.getEndTime());
+			GanttBox gb = new GanttBox(g.getName(),g.getEndTime(), g.getStartTime());
 			gb.setPrefWidth(2 * g.getEndTime() - g.getStartTime());
 			hb.getChildren().add(gb);
 		}

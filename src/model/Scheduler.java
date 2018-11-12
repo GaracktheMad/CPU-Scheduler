@@ -3,7 +3,6 @@ package model;
 import java.util.ArrayList;
 
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import view.Gantt;
 
 /**

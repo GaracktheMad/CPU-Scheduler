@@ -43,14 +43,14 @@ public class GanttBox extends BorderPane implements Comparator<GanttBox> {
 	 * @param endTime
 	 *            The time at which this process ends
 	 */
-	public GanttBox(String processN, double endTime) {
+	public GanttBox(String processN, double endTime, double startTime) {
 		sortResource = endTime;
 		processName = new Label(processN);
 		processName.setAlignment(Pos.TOP_CENTER);
 		time = new Label(String.valueOf(endTime));
 		time.setAlignment(Pos.BOTTOM_RIGHT);
 		ganttBox = new Rectangle();
-		ganttBox.setWidth(endTime * 5);
+		ganttBox.setWidth((endTime - startTime - 1) * 2);
 		ganttBox.setHeight(10);
 		setTop(processName);
 		setCenter(ganttBox);

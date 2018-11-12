@@ -30,9 +30,9 @@ public class MainApplicationWindow extends BorderPane {
 	 */
 	private ScrollPane scrolling;
 	/**
-	 * Gantt Chart object which will be filled after calculations
+	 * Gantt Chart HBox which will be filled after calculations
 	 */
-	private GanttChart chart;
+	private HBox chart;
 	/**
 	 * The selections menu
 	 */
@@ -191,6 +191,7 @@ public class MainApplicationWindow extends BorderPane {
 			processes.add(new ProcessInfoBox());
 			processList.getChildren().add(processes.get(i - 1));
 		}
+		
 	}
 
 	/**
@@ -224,11 +225,17 @@ public class MainApplicationWindow extends BorderPane {
 
 		processList.getChildren().add(topLabel);
 		for (PrioritizedProcess p : alpp) {
-			ProcessInfoBox pib = new ProcessInfoBox(p.getName(), p.getBurstTime(), p.getArrivalTime(), p.getWaitTime(),
-					p.getTurnAroundTime(), p.getPriority(), p.id);
+			
+			String w = String.format("%14.2f", p.getWaitTime());
+			String t = String.format("%10.2f", p.getTurnAroundTime());
+			
+			ProcessInfoBox pib = new ProcessInfoBox(p.getName(), p.getBurstTime(), p.getArrivalTime(), w,
+					t, p.getPriority(), p.id);
 			processes.add(pib);
 			processList.getChildren().add(pib);
 		}
+		
+		
 	}
 
 	/**
@@ -260,11 +267,17 @@ public class MainApplicationWindow extends BorderPane {
 		processList.getChildren().add(topLabel);
 
 		for (model.Process p : alp) {
-			ProcessInfoBox pib = new ProcessInfoBox(p.getName(), p.getBurstTime(), p.getArrivalTime(), p.getWaitTime(),
-					p.getTurnAroundTime(), -1, p.id);
+			
+			String w = String.format("%14.2f", p.getWaitTime());
+			String t = String.format("%10.2f", p.getTurnAroundTime());
+			
+			ProcessInfoBox pib = new ProcessInfoBox(p.getName(), p.getBurstTime(), p.getArrivalTime(), w,
+					t, -1, p.id);
 			processes.add(pib);
 			processList.getChildren().add(pib);
 		}
+		
+		
 	}
 
 	/**
@@ -275,10 +288,10 @@ public class MainApplicationWindow extends BorderPane {
 	 * @param allGanttBoxes An array list of all gantt boxes to be displayed. .sort
 	 *                      is called automatically.
 	 */
-	public void setGanttList(ArrayList<GanttBox> allGanttBoxes) {
+	public void setGanttList(HBox hb) {
 		bottomSection.getChildren().remove(chart);
-		chart = new GanttChart(allGanttBoxes);
-		bottomSection.getChildren().add(chart);
+		chart = hb;
+		bottomSection.getChildren().add(hb);
 	}
 
 	/**

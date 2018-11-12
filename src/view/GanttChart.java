@@ -17,8 +17,8 @@ public class GanttChart extends HBox{
 	 */
 	public GanttChart(ArrayList<GanttBox> ganttBoxes) {
 		super();
-		getChildren().add(new GanttBox("", 0));
-		ganttBoxes.sort(new GanttBox("", 0));
+//		getChildren().add(new GanttBox("", 0));
+//		ganttBoxes.sort(new GanttBox("", 0));
 		for (GanttBox gb : ganttBoxes) {
 			getChildren().add(gb);
 		}
