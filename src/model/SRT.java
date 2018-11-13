@@ -59,6 +59,8 @@ public class SRT extends Scheduler<ArrivalProcess>{
 
 	/**
 	 * Execute the processes in an SJF algorithm
+	 * 
+	 * @return processes list
 	 */
 	@Override
 	public ArrayList<ArrivalProcess> run() {
@@ -70,7 +72,6 @@ public class SRT extends Scheduler<ArrivalProcess>{
 		
 		//Set the wait and turnaround times of all processes to 0
 		for(Process p: processes) {
-			System.out.println(p.getName() + ":	" + p.getBurstTime() + " : " + p.getArrivalTime());
 			try {
 				p.setWaitTime(0);
 				p.setTurnAroundTime(0);

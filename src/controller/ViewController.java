@@ -110,7 +110,7 @@ public class ViewController extends Application {
 				if (currentAlgorithm.equals("FIFO")) {
 					scheduler = new FIFO(processes);
 				} else if (currentAlgorithm.equals("RR")) {
-					scheduler = new RoundRobin(processes);
+					scheduler = new RoundRobin(processes, frame.selections.getQuantum());
 				} else {
 					scheduler = new SRT(processes);
 				}
@@ -221,8 +221,7 @@ public class ViewController extends Application {
 						scheduler.gantt.refresh();
 						frame.setGanttList(scheduler.gantt);
 					} else {
-						scheduler = new RoundRobin(aProcesses);
-						scheduler.run();
+						scheduler = new RoundRobin(aProcesses, frame.selections.getQuantum());
 						ArrayList<Process> alp = scheduler.run();
 						frame.setProcessList(alp);
 						frame.setAverages(scheduler);
