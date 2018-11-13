@@ -5,11 +5,12 @@ import java.util.Collections;
 
 /**
  * Shortest-Remaining-Time algorithm
+ * 
  * @author Brandon Ruiz
  *
  */
-public class SRT extends Scheduler<ArrivalProcess>{
-	
+public class SRT extends Scheduler<ArrivalProcess> {
+
 	/**
 	 * Constructor - nothing passed
 	 */
@@ -17,9 +18,10 @@ public class SRT extends Scheduler<ArrivalProcess>{
 		super();
 		processes = new ArrayList<ArrivalProcess>();
 	}
-	
+
 	/**
 	 * Constructor - list of processes passed
+	 * 
 	 * @param burst process list
 	 */
 	public SRT(ArrayList<ArrivalProcess> processes) {
@@ -29,6 +31,7 @@ public class SRT extends Scheduler<ArrivalProcess>{
 
 	/**
 	 * Process addition
+	 * 
 	 * @param new arrival process
 	 */
 	@Override
@@ -44,6 +47,7 @@ public class SRT extends Scheduler<ArrivalProcess>{
 
 	/**
 	 * Generate a series of random arrival processes
+	 * 
 	 * @param Number of processes to be generated
 	 */
 	@Override
@@ -64,14 +68,14 @@ public class SRT extends Scheduler<ArrivalProcess>{
 	 */
 	@Override
 	public ArrayList<ArrivalProcess> run() {
-		//An array of terminated processes, the returned array
+		// An array of terminated processes, the returned array
 		ArrayList<ArrivalProcess> terminated = new ArrayList<ArrivalProcess>();
-		
-		//Sort the processes by arrival time
+
+		// Sort the processes by arrival time
 		Collections.sort(processes);
-		
-		//Set the wait and turnaround times of all processes to 0
-		for(Process p: processes) {
+
+		// Set the wait and turnaround times of all processes to 0
+		for (Process p : processes) {
 			try {
 				p.setWaitTime(0);
 				p.setTurnAroundTime(0);
@@ -79,35 +83,36 @@ public class SRT extends Scheduler<ArrivalProcess>{
 				e.printStackTrace();
 			}
 		}
-		
-		//Current CPU time
+
+		// Current CPU time
 		double time = 0;
-		
-		while(processes.size() > 0) {
-			//Any time there's a gap in CPU processing, it will be mapped to the Gantt chart and the time will be updated
-			if(processes.get(0).getArrivalTime() > time) {
+
+		while (processes.size() > 0) {
+			// Any time there's a gap in CPU processing, it will be mapped to the Gantt
+			// chart and the time will be updated
+			if (processes.get(0).getArrivalTime() > time) {
 				gantt.addSection("Idle", time);
 				time = processes.get(0).getArrivalTime();
 			}
-			
-			//The current process running
+
+			// The current process running
 			ArrivalProcess current = processes.get(0);
-			
-			for(int i = 1; i < processes.size(); i++) {
+
+			for (int i = 1; i < processes.size(); i++) {
 				/*
-				 * If a process:
-				 * has a shorter burst time than the current
-				 * has an arrival time shorter than the projected end time of the current
-				 * will still have a shorter burst if it cuts off the process while running
+				 * If a process: has a shorter burst time than the current has an arrival time
+				 * shorter than the projected end time of the current will still have a shorter
+				 * burst if it cuts off the process while running
 				 */
-				if(processes.get(i).getBurstTime() < current.getBurstTime()
-						&& processes.get(i).getArrivalTime() < time + current.getBurstTime()
-						&& processes.get(i).getBurstTime() < time + current.getBurstTime() - processes.get(i).getArrivalTime()) {
-					if(processes.get(i).getArrivalTime() <= time) 
+				if (processes.get(i).getBurstTime() < current.getBurstTime()
+						&& processes.get(i).getArrivalTime() < time + current.getBurstTime() && processes.get(i)
+								.getBurstTime() < time + current.getBurstTime() - processes.get(i).getArrivalTime()) {
+					if (processes.get(i).getArrivalTime() <= time)
 						current = processes.get(i);
 					else {
 						try {
-							//Process the current for the time it has before it is cut off by a shorter burst process
+							// Process the current for the time it has before it is cut off by a shorter
+							// burst process
 							gantt.addSection(current.getName(), time);
 							double dt = processes.get(i).getArrivalTime() - time;
 							System.out.println(dt);
@@ -115,19 +120,20 @@ public class SRT extends Scheduler<ArrivalProcess>{
 							current.setTurnAroundTime(current.getTurnAroundTime() + dt);
 							time += dt;
 							current = processes.get(i);
-						} catch(InvalidTimeException e) {
+						} catch (InvalidTimeException e) {
 							e.printStackTrace();
 						}
 					}
 				}
 			}
-			
-			//Process the current for the remainder of its burst time
+
+			// Process the current for the remainder of its burst time
 			try {
-				
-				//End chance
-				if(terminate) return null;
-				
+
+				// End chance
+				if (terminate)
+					return null;
+
 				gantt.addSection(current.getName(), time);
 				current.setWaitTime(time - current.getArrivalTime() - current.getTurnAroundTime());
 				time += current.getBurstTime();
@@ -135,20 +141,21 @@ public class SRT extends Scheduler<ArrivalProcess>{
 				current.setTurnAroundTime(current.getWaitTime() + current.getBurstTime());
 				terminated.add(current);
 				processes.remove(current);
-			} catch(InvalidTimeException e) {
+			} catch (InvalidTimeException e) {
 				e.printStackTrace();
 			}
-			
+
 		}
-		
-		//End chance
-		if(terminate) return null;
+
+		// End chance
+		if (terminate)
+			return null;
 		alert.close();
-		
+
 		gantt.end(time);
 		processes = terminated;
 		averageCalc();
-		
+
 		return terminated;
 	}
 

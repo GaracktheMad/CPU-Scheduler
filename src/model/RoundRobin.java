@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * Round Robin Algorithm
- * WIP
+ * Round Robin Algorithm WIP
  * 
  * @author Brandon Ruiz
  *
@@ -37,7 +36,7 @@ public class RoundRobin extends Scheduler<ArrivalProcess> {
 	 * Scheduler constructor - process list and quantum given
 	 * 
 	 * @param arrival process list
-	 * @param time quantum
+	 * @param time    quantum
 	 */
 	public RoundRobin(ArrayList<ArrivalProcess> processes, double timeQuantum) {
 		super();
@@ -129,26 +128,30 @@ public class RoundRobin extends Scheduler<ArrivalProcess> {
 			}
 
 			for (int i = 0; i < processes.size(); i++) {
-				if (processes.get(i).getArrivalTime() > time) break;
-				else try {
-					if(processes.get(i).getBurstTime() > timeQuantum) {
-						gantt.addSection(processes.get(i).getName(), time);
-						processes.get(i).setBurstTime(processes.get(i).getBurstTime() - timeQuantum);
-						processes.get(i).setTurnAroundTime(processes.get(i).getTurnAroundTime() + timeQuantum);
-						time += timeQuantum;
+				if (processes.get(i).getArrivalTime() > time)
+					break;
+				else
+					try {
+						if (processes.get(i).getBurstTime() > timeQuantum) {
+							gantt.addSection(processes.get(i).getName(), time);
+							processes.get(i).setBurstTime(processes.get(i).getBurstTime() - timeQuantum);
+							processes.get(i).setTurnAroundTime(processes.get(i).getTurnAroundTime() + timeQuantum);
+							time += timeQuantum;
+						} else {
+							gantt.addSection(processes.get(i).getName(), time);
+							processes.get(i).setWaitTime(
+									time - processes.get(i).getTurnAroundTime() - processes.get(i).getArrivalTime());
+							time += processes.get(i).getBurstTime();
+							processes.get(i).setBurstTime(
+									processes.get(i).getBurstTime() + processes.get(i).getTurnAroundTime());
+							processes.get(i).setTurnAroundTime(
+									processes.get(i).getBurstTime() + processes.get(i).getWaitTime());
+							terminated.add(processes.get(i));
+							processes.remove(processes.get(i));
+						}
+					} catch (InvalidTimeException e) {
+						e.printStackTrace();
 					}
-					else {
-						gantt.addSection(processes.get(i).getName(), time);
-						processes.get(i).setWaitTime(time - processes.get(i).getTurnAroundTime() - processes.get(i).getArrivalTime());
-						time += processes.get(i).getBurstTime();
-						processes.get(i).setBurstTime(processes.get(i).getBurstTime() + processes.get(i).getTurnAroundTime());
-						processes.get(i).setTurnAroundTime(processes.get(i).getBurstTime() + processes.get(i).getWaitTime());
-						terminated.add(processes.get(i));
-						processes.remove(processes.get(i));
-					}
-				} catch (InvalidTimeException e) {
-					e.printStackTrace();
-				}
 			}
 		}
 		averageCalc();
@@ -162,29 +165,29 @@ public class RoundRobin extends Scheduler<ArrivalProcess> {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
+
 	/**
 	 * Override of average wait time for algorithm
 	 */
 	@Override
 	public double getAverageWaitTime() {
 		double t = 0;
-		for(ArrivalProcess ap: processes) {
+		for (ArrivalProcess ap : processes) {
 			t += ap.getWaitTime();
 		}
 		return t / processes.size();
 	}
-	
+
 	/**
 	 * Override of average turnaround time for algorithm
 	 */
 	@Override
 	public double getAverageTurnAroundTime() {
 		double t = 0;
-		for(ArrivalProcess ap: processes) {
+		for (ArrivalProcess ap : processes) {
 			t += ap.getTurnAroundTime();
 		}
 		return t / processes.size();
 	}
-	
+
 }

@@ -1,5 +1,5 @@
 # CPU_Scheduler
-
+By Brandon Ruiz and Peter Vukas
 ## Usage
 1. Select the algorithm to use. Default is FIFO.
 2. Select the number of processes. Default is 1.
@@ -17,6 +17,5 @@
 7. The user hitting random also wants the randomized values calculated. The user can however edit these values after and recalculate.
 
 ## Quirks and Bugs
-1. Round Robin does not function.
-2. The Gantt Chart boxes may not connect to other boxes properly if the given burst time value is too small
-3. The Gantt Chart and calculated averages will not disappear on switching algorithms, processes, or data. The chart and values will update on clicking the calculate button.
+1. The Gantt Chart boxes may not connect to other boxes properly if the given burst time value is too small
+2. The Gantt Chart and calculated averages will not disappear on switching algorithms, processes, or data. The chart and values will update on clicking the calculate button.

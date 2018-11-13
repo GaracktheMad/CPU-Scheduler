@@ -74,8 +74,8 @@ public class SelectionsBox extends VBox {
 			EventHandler<ActionEvent> randomize, EventHandler<ActionEvent> algorithmSelection,
 			EventHandler<ActionEvent> processNumSelection) {
 		algorithmBox = new ComboBox<String>();
-		algorithmBox.getItems().addAll("First in First Out", "Shortest Job First", "Priority", 
-				"Round Robin", "Shortest Remaining Time First");
+		algorithmBox.getItems().addAll("First in First Out", "Shortest Job First", "Priority", "Round Robin",
+				"Shortest Remaining Time First");
 		algorithmBox.setEditable(false); // Ensures the user can only select expected values.
 		algorithmBox.getSelectionModel().selectFirst();
 		processNumBox = new ComboBox<Integer>();
