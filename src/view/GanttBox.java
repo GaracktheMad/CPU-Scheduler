@@ -16,7 +16,7 @@ import javafx.scene.text.Text;
 /**
  * A box which is used in constructing a Gantt chart
  * 
- * @author Peter Vukas
+ * @author Peter Vukas and Brandom Ruiz
  *
  */
 public class GanttBox extends BorderPane implements Comparator<GanttBox> {

@@ -12,7 +12,7 @@ import javafx.scene.layout.HBox;
  * 
  */
 public class Gantt extends ScrollPane {
-	
+
 	private HBox dummy;
 
 	/**
@@ -83,7 +83,13 @@ public class Gantt extends ScrollPane {
 			System.out.println(gp.getName() + ":	" + gp.getStartTime() + " - " + gp.getEndTime());
 		}
 	}
-	
+
+	/**
+	 * Call before displaying this gantt chart
+	 * 
+	 * @return This gantt chart as a scroll pane, if needed. Can also use the
+	 *         instance itself.
+	 */
 	public ScrollPane refresh() {
 		for (GanttSection g : chart) {
 			dummy.getChildren().add(new GanttBox(g.getName(), g.getEndTime(), g.getStartTime()));
@@ -92,6 +98,5 @@ public class Gantt extends ScrollPane {
 		this.setPrefHeight(100);
 		return this;
 	}
-
 
 }
